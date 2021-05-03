@@ -13,7 +13,8 @@ function App() {
 
     return (
         <div className="app">
-            <input type="file" onChange={handleFileChange}/>
+            <input type="file" onChange={handleInputFileChange}/>
+
             {fileInfo && <div className="file-info">
                 Name: {fileInfo.name}<br/>
                 Size: {fileInfo.size}<br/>
@@ -24,16 +25,37 @@ function App() {
             {loadingProgress && <ProgressBar value={loadingProgress}/>}
 
             {hexValues && <HexView values={hexValues}/>}
+
+            <div className="drop-zone" onDragOver={handleDragOver} onDrop={handleDrop} />
         </div>
     );
 
-    function handleFileChange(e) {
+    function handleDragOver(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        // e.dataTransfer.dropEffect = 'copy';
+    }
+
+    function handleDrop(e) {
+        e.stopPropagation();
+        e.preventDefault();
+
+        if (!e.dataTransfer.files.length) {
+            return;
+        }
+
+        handleFileSelect(e.dataTransfer.files[0]);
+    }
+
+    function handleInputFileChange(e) {
         if (!e.target.files.length) {
             return;
         }
 
-        const file = e.target.files[0];
+        handleFileSelect(e.target.files[0]);
+    }
 
+    function handleFileSelect(file) {
         setFileInfo({
             lastModified: file.lastModified,
             name: file.name,
@@ -42,22 +64,26 @@ function App() {
         });
 
         const reader = new FileReader();
-        reader.onprogress = (e) => {
-            const percent = Math.round(e.loaded / (e.total / 100));
-            setLoadingProgress(percent);
-        };
-        reader.onload = (e) => {
+        reader.onprogress = handleReaderProgress;
+        reader.onload = handleReaderLoad;
+
+        let bytesToView = file.size <= PAGE_SIZE ? file.size : PAGE_SIZE;
+        const blob = file.slice(0, bytesToView);
+        reader.readAsArrayBuffer(blob);
+
+        function handleReaderLoad(e) {
             setLoadingProgress(null);
 
             const buffer = e.target.result;
 
             let view = new Uint8Array(buffer);
             setHexValues(view);
-        };
+        }
 
-        let bytesToView = file.size <= PAGE_SIZE ? file.size : PAGE_SIZE;
-        const blob = file.slice(0, bytesToView);
-        reader.readAsArrayBuffer(blob);
+        function handleReaderProgress(e) {
+            const percent = Math.round(e.loaded / (e.total / 100));
+            setLoadingProgress(percent);
+        }
     }
 }
 
