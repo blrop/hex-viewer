@@ -1,0 +1,31 @@
+.dropZone {
+    width: 300px;
+    height: 200px;
+    border: 5px dashed #769db6;
+}
+
+.app {
+    width: 960px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-areas:
+        "header header header"
+        "sidebar hex-view text-view";
+    gap: 10px 40px;
+}
+
+.header {
+    grid-area: header;
+}
+
+.sidebar {
+    grid-area: sidebar;
+}
+
+.hexView {
+    grid-area: hex-view;
+}
+
+.textView {
+    grid-area: text-view;
+}

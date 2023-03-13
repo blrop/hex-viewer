@@ -1,39 +1,62 @@
 import { useState } from 'react';
 import moment from 'moment';
 
-import './App.css';
 import ProgressBar from './ProgressBar/ProgressBar';
 import HexView from './HexView/HexView';
 import { PAGE_SIZE } from '../common/constants';
 
+import styles from './App.module.css';
+import TextPreview from './TextPreview/TextPreview';
+
+const getChar = (byte1, byte2) => {
+    const mask1 = 31;
+    const cleanByte1 = byte1 & mask1;
+    const mask2 = 63;
+    const cleanByte2 = byte2 & mask2;
+    const part1 = cleanByte1 >> 2;
+    const part2 = ((cleanByte1 & 3) << 6) + cleanByte2;
+
+    return String.fromCodePoint((part1 << 8) + part2);
+};
+
+console.log(getChar(209, 143));
+console.log(getChar(208, 191));
+
 function App() {
     const [fileInfo, setFileInfo] = useState();
     const [loadingProgress, setLoadingProgress] = useState();
-    const [hexValues, setHexValues] = useState();
+    const [fileValues, setFileValues] = useState();
 
     return (
-        <div className="app">
-            <input type="file" onChange={handleInputFileChange}/>
-
-            {fileInfo && <div className="file-info">
-                Name: {fileInfo.name}<br/>
-                Size: {fileInfo.size}<br/>
-                Type: {fileInfo.type}<br/>
-                Last modified: {moment(fileInfo.lastModified).format("YYYY.MM.DD HH:mm:ss")}
-            </div>}
-
-            {loadingProgress && <ProgressBar value={loadingProgress}/>}
-
-            {hexValues && <HexView values={hexValues}/>}
-
-            <div className="drop-zone" onDragOver={handleDragOver} onDrop={handleDrop} />
+        <div className={styles.app}>
+            <div className={styles.header}>
+                <input type="file" onChange={handleInputFileChange}/>
+                {loadingProgress && <ProgressBar value={loadingProgress}/>}
+                <div className={styles.dropZone} onDragOver={handleDragOver} onDrop={handleDrop} />
+            </div>
+            <div className={styles.sidebar}>
+                {fileInfo && (
+                    <div className="file-info">
+                        Name: {fileInfo.name}<br/>
+                        Size: {fileInfo.size}<br/>
+                        Type: {fileInfo.type}<br/>
+                        Last modified: {moment(fileInfo.lastModified).format("YYYY.MM.DD HH:mm:ss")}
+                    </div>
+                )}
+            </div>
+            <div className={styles.hexView}>
+                {fileValues && <HexView values={fileValues}/>}
+            </div>
+            <div className={styles.textView}>
+                {fileValues && <TextPreview values={fileValues}/>}
+            </div>
         </div>
     );
 
     function handleDragOver(e) {
         e.stopPropagation();
         e.preventDefault();
-        // e.dataTransfer.dropEffect = 'copy';
+        e.dataTransfer.dropEffect = 'copy';
     }
 
     function handleDrop(e) {
@@ -76,8 +99,8 @@ function App() {
 
             const buffer = e.target.result;
 
-            let view = new Uint8Array(buffer);
-            setHexValues(view);
+            const view = new Uint8Array(buffer);
+            setFileValues(view);
         }
 
         function handleReaderProgress(e) {

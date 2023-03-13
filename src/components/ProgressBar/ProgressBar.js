@@ -1,9 +1,9 @@
-import './ProgressBar.scss';
+import styles from './ProgressBar.module.scss';
 
 function ProgressBar({ value }) {
     return (
-        <div className="progress-bar">
-            <div className="progress-bar__indicator" style={{ width: `${value}%` }}/>
+        <div className={styles.progressBar}>
+            <div className={styles.progressBar__indicator} style={{ width: `${value}%` }}/>
         </div>
     );
 }
