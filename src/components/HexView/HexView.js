@@ -1,9 +1,9 @@
 import styles from './HexView.module.scss';
 
-function HexView({ values }) {
+function HexView({ bytes }) {
     return (
         <div className={styles.hexView}>
-            {[...values]
+            {[...bytes]
                 .map((value, index) =>
                     <div key={index} className="hex-view__value">{toHex(value)}</div>
                 )}

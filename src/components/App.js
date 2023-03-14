@@ -1,31 +1,21 @@
 import { useState } from 'react';
 import moment from 'moment';
 
+import { PAGE_SIZE } from '../common/constants';
+import { getCharFromTwoBytes } from "../common/tools";
 import ProgressBar from './ProgressBar/ProgressBar';
 import HexView from './HexView/HexView';
-import { PAGE_SIZE } from '../common/constants';
-
-import styles from './App.module.css';
 import TextPreview from './TextPreview/TextPreview';
 
-const getChar = (byte1, byte2) => {
-    const mask1 = 31;
-    const cleanByte1 = byte1 & mask1;
-    const mask2 = 63;
-    const cleanByte2 = byte2 & mask2;
-    const part1 = cleanByte1 >> 2;
-    const part2 = ((cleanByte1 & 3) << 6) + cleanByte2;
+import styles from './App.module.css';
 
-    return String.fromCodePoint((part1 << 8) + part2);
-};
-
-console.log(getChar(209, 143));
-console.log(getChar(208, 191));
+console.log(getCharFromTwoBytes(209, 143));
+console.log(getCharFromTwoBytes(208, 191));
 
 function App() {
     const [fileInfo, setFileInfo] = useState();
     const [loadingProgress, setLoadingProgress] = useState();
-    const [fileValues, setFileValues] = useState();
+    const [fileBytes, setFileBytes] = useState();
 
     return (
         <div className={styles.app}>
@@ -45,10 +35,10 @@ function App() {
                 )}
             </div>
             <div className={styles.hexView}>
-                {fileValues && <HexView values={fileValues}/>}
+                {fileBytes && <HexView bytes={fileBytes} />}
             </div>
             <div className={styles.textView}>
-                {fileValues && <TextPreview values={fileValues}/>}
+                {fileBytes && <TextPreview bytes={fileBytes} />}
             </div>
         </div>
     );
@@ -100,7 +90,7 @@ function App() {
             const buffer = e.target.result;
 
             const view = new Uint8Array(buffer);
-            setFileValues(view);
+            setFileBytes(view);
         }
 
         function handleReaderProgress(e) {
