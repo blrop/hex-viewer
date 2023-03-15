@@ -5,21 +5,17 @@
 }
 
 .app {
-    width: 960px;
+    width: 1200px;
     margin: 0 auto;
     display: grid;
     grid-template-areas:
-        "header header header"
-        "sidebar hex-view text-view";
+        "header header"
+        "hex-view text-view";
     gap: 10px 40px;
 }
 
 .header {
     grid-area: header;
-}
-
-.sidebar {
-    grid-area: sidebar;
 }
 
 .hexView {
@@ -28,4 +24,8 @@
 
 .textView {
     grid-area: text-view;
+}
+
+.fileInfo {
+    margin: 10px 0;
 }

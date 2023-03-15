@@ -2,15 +2,11 @@ import { useState } from 'react';
 import moment from 'moment';
 
 import { PAGE_SIZE } from '../common/constants';
-import { getCharFromTwoBytes } from "../common/tools";
 import ProgressBar from './ProgressBar/ProgressBar';
 import HexView from './HexView/HexView';
 import TextPreview from './TextPreview/TextPreview';
 
 import styles from './App.module.css';
-
-console.log(getCharFromTwoBytes(209, 143));
-console.log(getCharFromTwoBytes(208, 191));
 
 function App() {
     const [fileInfo, setFileInfo] = useState();
@@ -22,17 +18,15 @@ function App() {
             <div className={styles.header}>
                 <input type="file" onChange={handleInputFileChange}/>
                 {loadingProgress && <ProgressBar value={loadingProgress}/>}
-                <div className={styles.dropZone} onDragOver={handleDragOver} onDrop={handleDrop} />
-            </div>
-            <div className={styles.sidebar}>
                 {fileInfo && (
-                    <div className="file-info">
+                    <div className={styles.fileInfo}>
                         Name: {fileInfo.name}<br/>
                         Size: {fileInfo.size}<br/>
                         Type: {fileInfo.type}<br/>
                         Last modified: {moment(fileInfo.lastModified).format("YYYY.MM.DD HH:mm:ss")}
                     </div>
                 )}
+                <div className={styles.dropZone} onDragOver={handleDragOver} onDrop={handleDrop} />
             </div>
             <div className={styles.hexView}>
                 {fileBytes && <HexView bytes={fileBytes} />}

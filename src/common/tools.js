@@ -4,7 +4,6 @@ const B_1110_0000 = 224;
 const B_1111_0000 = 240;
 const B_1111_1000 = 248;
 
-const B_0000_0011 = 3;
 const B_0000_0111 = 7;
 const B_0000_1111 = 15;
 const B_0001_1111 = 31;
@@ -56,12 +55,3 @@ export const getChar = (bytes) => {
 
     return result;
 }
-
-export const getCharFromTwoBytes = (byte1, byte2) => {
-    const cleanByte1 = byte1 & B_0001_1111;
-    const cleanByte2 = byte2 & B_0011_1111;
-    const part1 = cleanByte1 >> 2; // take only first 3 bits (rest 2 bits + 6 bits in next byte are parts of the second byte)
-    const part2 = ((cleanByte1 & B_0000_0011) << 6) + cleanByte2; // take rest 2 bits, move them to the byte's left most position and add rest 6 bits
-
-    return String.fromCodePoint((part1 << 8) + part2);
-};

@@ -1,5 +1,6 @@
 .preview {
   display: grid;
   grid-template-columns: repeat(32, 1fr);
-  text-transform: uppercase;
+  font-family: monospace;
+  font-size: 18px;
 }
