@@ -54,10 +54,20 @@
 
 .hexView {
     grid-area: hex-view;
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    text-transform: uppercase;
+    gap: 5px 15px;
+    font-family: monospace;
+    font-size: 18px;
 }
 
 .textView {
     grid-area: text-view;
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    font-family: monospace;
+    font-size: 18px;
 }
 
 .file-info {

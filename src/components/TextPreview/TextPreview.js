@@ -1,10 +1,56 @@
-import styles from './TextPreview.module.scss';
+import classNames from 'classnames';
+
 import { getChar, getSymbolLength, makeBytesIterator } from "../../common/tools";
 
-const TextPreview = ({ bytes }) => {
-    const renderSymbol = (charCode, index) => (
-        <div key={index}>{String.fromCharCode(charCode)}</div>
+import styles from './TextPreview.module.scss';
+
+const Item = ({ empty, index, charCode, onClick, isSelected, isActiveView }) => {
+    const handleClick = () => onClick(index);
+
+    return (
+        <div
+            data-index={ index }
+            className={
+                classNames(styles.value, {
+                    [styles['value--empty']]: empty,
+                    [styles['value--selected']]: isSelected,
+                    [styles['active-view']]: isActiveView,
+                })
+            }
+            onClick={ handleClick }
+        >
+            { String.fromCharCode(charCode) }
+        </div>
     );
+};
+
+const TextPreview = ({ bytes, unicodeMode, onByteClick, selectedByte, isActiveView }) => {
+    const renderSymbol = (charCode, index, bytesNumber) => {
+        const output = [
+            <Item
+                key={ index }
+                index={ index }
+                charCode={ charCode }
+                onClick={ onByteClick }
+                isSelected={ selectedByte === index }
+                isActiveView={ isActiveView }
+            />
+        ];
+        for (let i = 1; i < bytesNumber; i++) {
+            output.push(
+                <Item
+                    key={`${ index }-${ i }`}
+                    empty={ true }
+                    index={ index }
+                    charCode={ charCode }
+                    onClick={ onByteClick }
+                    isSelected={ selectedByte === index }
+                    isActiveView={ isActiveView }
+                />
+            );
+        }
+        return output;
+    };
 
     const bytesIterator = makeBytesIterator(bytes);
     const output = [];
@@ -12,8 +58,9 @@ const TextPreview = ({ bytes }) => {
     let index = 0;
     while (!result.done) {
         const byte = result.value;
-        const symbolLength = getSymbolLength(byte);
+        const symbolLength = unicodeMode ? getSymbolLength(byte) : 1;
         const bytesOfSymbol = [byte];
+
         for (let i = 1; i < symbolLength; i++) {
             result = bytesIterator.next();
             index++;
@@ -23,17 +70,14 @@ const TextPreview = ({ bytes }) => {
                 break;
             }
         }
-        output.push(renderSymbol(getChar(bytesOfSymbol), index));
+
+        output.push(renderSymbol(getChar(bytesOfSymbol), index, bytesOfSymbol.length));
 
         result = bytesIterator.next()
         index++;
     }
 
-    return (
-        <div className={styles.preview}>
-            {output}
-        </div>
-    );
+    return output;
 };
 
 export default TextPreview;

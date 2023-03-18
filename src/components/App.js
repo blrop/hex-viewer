@@ -2,61 +2,102 @@ import { useState } from 'react';
 import moment from 'moment';
 import classNames from 'classnames';
 
-import { PAGE_SIZE } from '../common/constants';
+import { ACTIVE_VIEW_HEX, ACTIVE_VIEW_TEXT, PAGE_SIZE } from '../common/constants';
 import HexView from './HexView/HexView';
 import TextPreview from './TextPreview/TextPreview';
 
 import styles from './App.module.scss';
 
+
 function App() {
     const [fileInfo, setFileInfo] = useState();
     const [fileBytes, setFileBytes] = useState();
     const [dragOver, setDragOver] = useState(false);
+    const [unicodeMode, setUnicodeMode] = useState(true);
+
+    const [selectedByte, setSelectedByte] = useState();
+    const [activeView, setActiveView] = useState();
 
     return (
-        <div className={styles.app}>
-            <div className={styles.header}>
-                <label className={styles.fileSelectLabel}>
+        <div className={ styles.app }>
+            <div className={ styles.header }>
+                <label className={ styles.fileSelectLabel }>
                     Choose file
-                    <input type="file" onChange={handleInputFileChange} />
+                    <input type="file" onChange={ handleInputFileChange }/>
                 </label>
 
-                <div className={styles['file-select']}>
-                    <div className={styles['file-select__title']}>or drop file here:</div>
+                <div className={ styles['file-select'] }>
+                    <div className={ styles['file-select__title'] }>or drop file here:</div>
                     <div
-                        className={classNames(styles['file-select__drop-zone'], { [styles.dragOver]: dragOver })}
-                        onDragOver={handleDragOver}
-                        onDrop={handleDrop}
-                        onDragLeave={handleDragLeave}
+                        className={ classNames(styles['file-select__drop-zone'], {[styles.dragOver]: dragOver}) }
+                        onDragOver={ handleDragOver }
+                        onDrop={ handleDrop }
+                        onDragLeave={ handleDragLeave }
                     />
                 </div>
 
-                {fileInfo && (
-                    <div className={styles['file-info']}>
-                        <div className={styles['file-info__title']}>File Info</div>
-                        <div className={styles['file-info__item']}>
-                            <h4>Name:</h4> {fileInfo.name}<br/>
+                { fileInfo && (
+                    <div className={ styles['file-info'] }>
+                        <div className={ styles['file-info__title'] }>File Info</div>
+                        <div className={ styles['file-info__item'] }>
+                            <h4>Name:</h4> { fileInfo.name }<br/>
                         </div>
-                        <div className={styles['file-info__item']}>
-                            <h4>Size:</h4> {fileInfo.size}<br/>
+                        <div className={ styles['file-info__item'] }>
+                            <h4>Size:</h4> { fileInfo.size }<br/>
                         </div>
-                        <div className={styles['file-info__item']}>
-                            <h4>Type:</h4> {fileInfo.type}<br/>
+                        <div className={ styles['file-info__item'] }>
+                            <h4>Type:</h4> { fileInfo.type }<br/>
                         </div>
-                        <div className={styles['file-info__item']}>
-                            <h4>Last modified:</h4> {moment(fileInfo.lastModified).format("YYYY.MM.DD HH:mm:ss")}
+                        <div className={ styles['file-info__item'] }>
+                            <h4>Last modified:</h4> { moment(fileInfo.lastModified).format("YYYY.MM.DD HH:mm:ss") }
                         </div>
                     </div>
-                )}
+                ) }
+
+                <label>
+                    <input type="checkbox" checked={ unicodeMode } onChange={ handleUnicodeModeChange }/>
+                    Unicode mode
+                </label>
             </div>
-            <div className={styles.hexView}>
-                {fileBytes && <HexView bytes={fileBytes} />}
+
+            <div className={ styles.hexView }>
+                { fileBytes && (
+                    <HexView
+                        bytes={ fileBytes }
+                        onByteClick={ handleHexViewByteClick }
+                        selectedByte={ selectedByte }
+                        isActiveView={ activeView === ACTIVE_VIEW_HEX }
+                    />
+                ) }
             </div>
-            <div className={styles.textView}>
-                {fileBytes && <TextPreview bytes={fileBytes} />}
+
+            <div className={ styles.textView }>
+                { fileBytes && (
+                    <TextPreview
+                        bytes={ fileBytes }
+                        onByteClick={ handleTextViewByteClick }
+                        unicodeMode={ unicodeMode }
+                        selectedByte={ selectedByte }
+                        isActiveView={ activeView === ACTIVE_VIEW_TEXT }
+                    />
+                ) }
             </div>
         </div>
     );
+
+    function handleTextViewByteClick(byteIndex) {
+        setActiveView(ACTIVE_VIEW_TEXT);
+        setSelectedByte(byteIndex);
+    }
+
+    function handleHexViewByteClick(byteIndex) {
+        setActiveView(ACTIVE_VIEW_HEX);
+        setSelectedByte(byteIndex);
+    }
+
+    function handleUnicodeModeChange(e) {
+        setUnicodeMode(e.target.value);
+    }
 
     function handleDragOver(e) {
         e.stopPropagation();

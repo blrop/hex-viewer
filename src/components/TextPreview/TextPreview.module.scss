@@ -1,6 +1,22 @@
-.preview {
-  display: grid;
-  grid-template-columns: repeat(32, 1fr);
-  font-family: monospace;
-  font-size: 18px;
+@import '../../common/constants';
+
+.value {
+  height: $byte-height;
+
+  &:hover {
+    background: $byte-hover-color;
+    cursor: pointer;
+  }
+
+  &--empty {
+    background: #ccc;
+  }
+
+  &--selected {
+    background: $selected-color;
+
+    &.active-view {
+      box-shadow: $active-view-item-shadow;
+    }
+  }
 }

@@ -1,8 +1,18 @@
-.hexView {
-    display: grid;
-    grid-template-columns: repeat(16, 1fr);
-    text-transform: uppercase;
-    gap: 5px 15px;
-    font-family: monospace;
-    font-size: 18px;
+@import '../../common/constants';
+
+.value {
+    height: $byte-height;
+
+    &:hover {
+        cursor: pointer;
+        background: $byte-hover-color;
+    }
+
+    &--selected {
+        background: $selected-color;
+
+        &.active-view {
+            box-shadow: $active-view-item-shadow;
+        }
+    }
 }
