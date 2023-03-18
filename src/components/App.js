@@ -1,32 +1,53 @@
 import { useState } from 'react';
 import moment from 'moment';
+import classNames from 'classnames';
 
 import { PAGE_SIZE } from '../common/constants';
-import ProgressBar from './ProgressBar/ProgressBar';
 import HexView from './HexView/HexView';
 import TextPreview from './TextPreview/TextPreview';
 
-import styles from './App.module.css';
+import styles from './App.module.scss';
 
 function App() {
     const [fileInfo, setFileInfo] = useState();
-    const [loadingProgress, setLoadingProgress] = useState();
     const [fileBytes, setFileBytes] = useState();
+    const [dragOver, setDragOver] = useState(false);
 
     return (
         <div className={styles.app}>
             <div className={styles.header}>
-                <input type="file" onChange={handleInputFileChange}/>
-                {loadingProgress && <ProgressBar value={loadingProgress}/>}
+                <label className={styles.fileSelectLabel}>
+                    Choose file
+                    <input type="file" onChange={handleInputFileChange} />
+                </label>
+
+                <div className={styles['file-select']}>
+                    <div className={styles['file-select__title']}>or drop file here:</div>
+                    <div
+                        className={classNames(styles['file-select__drop-zone'], { [styles.dragOver]: dragOver })}
+                        onDragOver={handleDragOver}
+                        onDrop={handleDrop}
+                        onDragLeave={handleDragLeave}
+                    />
+                </div>
+
                 {fileInfo && (
-                    <div className={styles.fileInfo}>
-                        Name: {fileInfo.name}<br/>
-                        Size: {fileInfo.size}<br/>
-                        Type: {fileInfo.type}<br/>
-                        Last modified: {moment(fileInfo.lastModified).format("YYYY.MM.DD HH:mm:ss")}
+                    <div className={styles['file-info']}>
+                        <div className={styles['file-info__title']}>File Info</div>
+                        <div className={styles['file-info__item']}>
+                            <h4>Name:</h4> {fileInfo.name}<br/>
+                        </div>
+                        <div className={styles['file-info__item']}>
+                            <h4>Size:</h4> {fileInfo.size}<br/>
+                        </div>
+                        <div className={styles['file-info__item']}>
+                            <h4>Type:</h4> {fileInfo.type}<br/>
+                        </div>
+                        <div className={styles['file-info__item']}>
+                            <h4>Last modified:</h4> {moment(fileInfo.lastModified).format("YYYY.MM.DD HH:mm:ss")}
+                        </div>
                     </div>
                 )}
-                <div className={styles.dropZone} onDragOver={handleDragOver} onDrop={handleDrop} />
             </div>
             <div className={styles.hexView}>
                 {fileBytes && <HexView bytes={fileBytes} />}
@@ -41,6 +62,13 @@ function App() {
         e.stopPropagation();
         e.preventDefault();
         e.dataTransfer.dropEffect = 'copy';
+        setDragOver(true);
+    }
+
+    function handleDragLeave(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        setDragOver(false);
     }
 
     function handleDrop(e) {
@@ -71,25 +99,17 @@ function App() {
         });
 
         const reader = new FileReader();
-        reader.onprogress = handleReaderProgress;
         reader.onload = handleReaderLoad;
 
-        let bytesToView = file.size <= PAGE_SIZE ? file.size : PAGE_SIZE;
+        const bytesToView = file.size <= PAGE_SIZE ? file.size : PAGE_SIZE;
         const blob = file.slice(0, bytesToView);
         reader.readAsArrayBuffer(blob);
 
         function handleReaderLoad(e) {
-            setLoadingProgress(null);
-
             const buffer = e.target.result;
 
             const view = new Uint8Array(buffer);
             setFileBytes(view);
-        }
-
-        function handleReaderProgress(e) {
-            const percent = Math.round(e.loaded / (e.total / 100));
-            setLoadingProgress(percent);
         }
     }
 }
