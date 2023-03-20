@@ -11,6 +11,10 @@
     &--selected {
         background: $selected-color;
 
+        &:hover {
+            background: $selected-color;
+        }
+
         &.active-view {
             box-shadow: $active-view-item-shadow;
         }
