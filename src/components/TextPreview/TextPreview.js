@@ -19,7 +19,7 @@ const Item = ({ empty, index, charCode, onClick, isSelected, isActiveView }) => 
             }
             onClick={ handleClick }
         >
-            { String.fromCharCode(charCode) }
+            { charCode && String.fromCharCode(charCode) }
         </div>
     );
 };
@@ -42,7 +42,6 @@ const TextPreview = ({ bytes, unicodeMode, onByteClick, selectedByte, isActiveVi
                     key={`${ index }-${ i }`}
                     empty={ true }
                     index={ index }
-                    charCode={ charCode }
                     onClick={ onByteClick }
                     isSelected={ selectedByte === index }
                     isActiveView={ isActiveView }
