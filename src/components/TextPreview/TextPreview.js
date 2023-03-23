@@ -35,13 +35,14 @@ const TextPreview = ({ bytes, unicodeMode, onByteClick, selectedByte }) => {
             />
         ];
         for (let i = 1; i < bytesNumber; i++) {
+            const innerByteIndex = index + i;
             output.push(
                 <Item
                     key={`${ index }-${ i }`}
                     empty={ true }
-                    index={ index + i }
+                    index={ innerByteIndex }
                     onClick={ onByteClick }
-                    isSelected={ selectedByte === index }
+                    isSelected={ selectedByte === innerByteIndex }
                 />
             );
         }
