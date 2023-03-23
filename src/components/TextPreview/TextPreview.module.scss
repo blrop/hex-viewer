@@ -1,6 +1,7 @@
 @import '../../common/constants';
 
 .value {
+  $self: &;
   height: $byte-height;
 
   &:hover {
@@ -21,6 +22,10 @@
 
     :global(.active-view) & {
       box-shadow: $active-view-item-shadow;
+    }
+
+    &#{ $self }--empty {
+      background: $selected-empty-color;
     }
   }
 }
