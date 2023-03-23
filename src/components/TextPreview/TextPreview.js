@@ -4,7 +4,7 @@ import { getChar, getSymbolLength, makeBytesIterator } from "../../common/tools"
 
 import styles from './TextPreview.module.scss';
 
-const Item = ({ empty, index, charCode, onClick, isSelected, isActiveView }) => {
+const Item = ({ empty, index, charCode, onClick, isSelected }) => {
     const handleClick = () => onClick(index);
 
     return (
@@ -14,7 +14,6 @@ const Item = ({ empty, index, charCode, onClick, isSelected, isActiveView }) => 
                 classNames(styles.value, {
                     [styles['value--empty']]: empty,
                     [styles['value--selected']]: isSelected,
-                    [styles['active-view']]: isActiveView,
                 })
             }
             onClick={ handleClick }
@@ -24,7 +23,7 @@ const Item = ({ empty, index, charCode, onClick, isSelected, isActiveView }) => 
     );
 };
 
-const TextPreview = ({ bytes, unicodeMode, onByteClick, selectedByte, isActiveView }) => {
+const TextPreview = ({ bytes, unicodeMode, onByteClick, selectedByte }) => {
     const renderSymbol = (charCode, index, bytesNumber) => {
         const output = [
             <Item
@@ -33,7 +32,6 @@ const TextPreview = ({ bytes, unicodeMode, onByteClick, selectedByte, isActiveVi
                 charCode={ charCode }
                 onClick={ onByteClick }
                 isSelected={ selectedByte === index }
-                isActiveView={ isActiveView }
             />
         ];
         for (let i = 1; i < bytesNumber; i++) {
@@ -44,7 +42,6 @@ const TextPreview = ({ bytes, unicodeMode, onByteClick, selectedByte, isActiveVi
                     index={ index }
                     onClick={ onByteClick }
                     isSelected={ selectedByte === index }
-                    isActiveView={ isActiveView }
                 />
             );
         }

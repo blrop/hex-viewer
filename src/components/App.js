@@ -60,25 +60,23 @@ function App() {
                 </label>
             </div>
 
-            <div className={ styles.hexView }>
+            <div className={ classNames(styles.hexView, { 'active-view': activeView === ACTIVE_VIEW_HEX }) }>
                 { fileBytes && (
                     <HexView
                         bytes={ fileBytes }
                         onByteClick={ handleHexViewByteClick }
                         selectedByte={ selectedByte }
-                        isActiveView={ activeView === ACTIVE_VIEW_HEX }
                     />
                 ) }
             </div>
 
-            <div className={ styles.textView }>
+            <div className={ classNames(styles.textView, { 'active-view': activeView === ACTIVE_VIEW_TEXT }) }>
                 { fileBytes && (
                     <TextPreview
                         bytes={ fileBytes }
                         onByteClick={ handleTextViewByteClick }
                         unicodeMode={ unicodeMode }
                         selectedByte={ selectedByte }
-                        isActiveView={ activeView === ACTIVE_VIEW_TEXT }
                     />
                 ) }
             </div>

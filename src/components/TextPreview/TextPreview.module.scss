@@ -19,7 +19,7 @@
       background: $selected-color;
     }
 
-    &.active-view {
+    :global(.active-view) & {
       box-shadow: $active-view-item-shadow;
     }
   }
