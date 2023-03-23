@@ -39,7 +39,7 @@ const TextPreview = ({ bytes, unicodeMode, onByteClick, selectedByte }) => {
                 <Item
                     key={`${ index }-${ i }`}
                     empty={ true }
-                    index={ index }
+                    index={ index + i }
                     onClick={ onByteClick }
                     isSelected={ selectedByte === index }
                 />
@@ -56,6 +56,7 @@ const TextPreview = ({ bytes, unicodeMode, onByteClick, selectedByte }) => {
         const byte = result.value;
         const symbolLength = unicodeMode ? getSymbolLength(byte) : 1;
         const bytesOfSymbol = [byte];
+        const firstByteIndex = index;
 
         for (let i = 1; i < symbolLength; i++) {
             result = bytesIterator.next();
@@ -67,7 +68,7 @@ const TextPreview = ({ bytes, unicodeMode, onByteClick, selectedByte }) => {
             }
         }
 
-        output.push(renderSymbol(getChar(bytesOfSymbol), index, bytesOfSymbol.length));
+        output.push(renderSymbol(getChar(bytesOfSymbol), firstByteIndex, bytesOfSymbol.length));
 
         result = bytesIterator.next()
         index++;
