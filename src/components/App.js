@@ -119,6 +119,7 @@ function App() {
         }
 
         handleFileSelect(e.dataTransfer.files[0]);
+        setDragOver(false);
     }
 
     function handleInputFileChange(e) {
