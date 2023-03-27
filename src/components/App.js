@@ -93,8 +93,8 @@ function App() {
         setSelectedByte(byteIndex);
     }
 
-    function handleUnicodeModeChange(e) {
-        setUnicodeMode(e.target.value);
+    function handleUnicodeModeChange() {
+        setUnicodeMode(!unicodeMode);
     }
 
     function handleDragOver(e) {
