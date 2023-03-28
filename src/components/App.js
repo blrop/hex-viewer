@@ -2,21 +2,16 @@ import { useState } from 'react';
 import moment from 'moment';
 import classNames from 'classnames';
 
-import { ACTIVE_VIEW_HEX, ACTIVE_VIEW_TEXT, PAGE_SIZE } from '../common/constants';
-import HexView from './HexView/HexView';
-import TextPreview from './TextPreview/TextPreview';
+import { PAGE_SIZE } from '../common/constants';
 
 import styles from './App.module.scss';
-
+import ViewsWrapper from "./ViewsWrapper/ViewsWrapper";
 
 function App() {
     const [fileInfo, setFileInfo] = useState();
     const [fileBytes, setFileBytes] = useState();
     const [dragOver, setDragOver] = useState(false);
     const [unicodeMode, setUnicodeMode] = useState(true);
-
-    const [selectedByte, setSelectedByte] = useState();
-    const [activeView, setActiveView] = useState();
 
     return (
         <div className={ styles.app }>
@@ -60,38 +55,9 @@ function App() {
                 </label>
             </div>
 
-            <div className={ classNames(styles.hexView, { 'active-view': activeView === ACTIVE_VIEW_HEX }) }>
-                { fileBytes && (
-                    <HexView
-                        bytes={ fileBytes }
-                        onByteClick={ handleHexViewByteClick }
-                        selectedByte={ selectedByte }
-                    />
-                ) }
-            </div>
-
-            <div className={ classNames(styles.textView, { 'active-view': activeView === ACTIVE_VIEW_TEXT }) }>
-                { fileBytes && (
-                    <TextPreview
-                        bytes={ fileBytes }
-                        onByteClick={ handleTextViewByteClick }
-                        unicodeMode={ unicodeMode }
-                        selectedByte={ selectedByte }
-                    />
-                ) }
-            </div>
+            { fileBytes && <ViewsWrapper bytes={fileBytes} unicodeMode={unicodeMode} /> }
         </div>
     );
-
-    function handleTextViewByteClick(byteIndex) {
-        setActiveView(ACTIVE_VIEW_TEXT);
-        setSelectedByte(byteIndex);
-    }
-
-    function handleHexViewByteClick(byteIndex) {
-        setActiveView(ACTIVE_VIEW_HEX);
-        setSelectedByte(byteIndex);
-    }
 
     function handleUnicodeModeChange() {
         setUnicodeMode(!unicodeMode);

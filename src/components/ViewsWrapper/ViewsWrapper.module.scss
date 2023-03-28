@@ -1,0 +1,29 @@
+@import '../../common/constants';
+
+.wrapper {
+  display: flex;
+  gap: 20px;
+}
+
+.hexView {
+  display: grid;
+  grid-template-columns: repeat($bytes-per-line, 1fr);
+  text-transform: uppercase;
+  gap: 5px 15px;
+  font-family: monospace;
+  font-size: 18px;
+}
+
+.delimiter {
+  background: #bdbdbd;
+  width: 1px;
+  flex-shrink: 0;
+}
+
+.textView {
+  display: grid;
+  grid-template-columns: repeat($bytes-per-line, 1fr);
+  font-family: monospace;
+  font-size: 18px;
+}
+

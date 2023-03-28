@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 
-import { getChar, getSymbolLength, makeBytesIterator } from "../../common/tools";
+import { getChar, getSymbolLength, makeBytesIterator } from "../../../common/tools";
 
 import styles from './TextPreview.module.scss';
 
