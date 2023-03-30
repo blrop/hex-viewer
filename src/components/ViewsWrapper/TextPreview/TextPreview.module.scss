@@ -1,31 +1,31 @@
 @import '../../../common/constants';
 
 .value {
-  $self: &;
-  height: $byte-height;
-
-  &:hover {
-    background: $byte-hover-color;
-    cursor: pointer;
-  }
-
-  &--empty {
-    background: #ccc;
-  }
-
-  &--selected {
-    background: $selected-color;
+    $self: &;
+    height: $byte-height;
 
     &:hover {
-      background: $selected-color;
+        background: $byte-hover-color;
+        cursor: pointer;
     }
 
-    :global(.active-view) & {
-      box-shadow: $active-view-item-shadow;
+    &--empty {
+        background: #ccc;
     }
 
-    &#{ $self }--empty {
-      background: $selected-empty-color;
+    &--selected {
+        background: $selected-color;
+
+        &:hover {
+            background: $selected-color;
+        }
+
+        :global(.active-view) & {
+            box-shadow: $active-view-item-shadow;
+        }
+
+        &#{ $self }--empty {
+            background: $selected-empty-color;
+        }
     }
-  }
 }

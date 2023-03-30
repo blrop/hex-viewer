@@ -1,11 +1,16 @@
 @import '../../../common/constants';
 
 .value {
+    $self: &;
     height: $byte-height;
 
     &:hover {
         cursor: pointer;
         background: $byte-hover-color;
+    }
+
+    &--empty {
+        background: #ccc;
     }
 
     &--selected {
@@ -17,6 +22,10 @@
 
         :global(.active-view) & {
             box-shadow: $active-view-item-shadow;
+        }
+
+        &#{ $self }--empty {
+            background: $selected-empty-color;
         }
     }
 }

@@ -5,16 +5,19 @@ import HexView from "./HexView/HexView";
 import TextPreview from "./TextPreview/TextPreview";
 
 import styles from './ViewsWrapper.module.scss';
+import { getSymbolLength, makeBytesIterator } from "../../common/tools";
 
 function ViewsWrapper({ bytes, unicodeMode }) {
     const [selectedByte, setSelectedByte] = useState();
     const [activeView, setActiveView] = useState(ACTIVE_VIEW_NONE);
 
+    const byteGroups = generateByteGroups(bytes, unicodeMode);
+
     return (
         <div className={ styles.wrapper }>
             <div className={ classNames(styles.hexView, { 'active-view': activeView === ACTIVE_VIEW_HEX }) }>
                 <HexView
-                    bytes={ bytes }
+                    byteGroups={ byteGroups }
                     onByteClick={ handleHexViewByteClick }
                     selectedByte={ selectedByte }
                 />
@@ -24,9 +27,8 @@ function ViewsWrapper({ bytes, unicodeMode }) {
 
             <div className={ classNames(styles.textView, { 'active-view': activeView === ACTIVE_VIEW_TEXT }) }>
                 <TextPreview
-                    bytes={ bytes }
+                    byteGroups={ byteGroups }
                     onByteClick={ handleTextViewByteClick }
-                    unicodeMode={ unicodeMode }
                     selectedByte={ selectedByte }
                 />
             </div>
@@ -41,6 +43,37 @@ function ViewsWrapper({ bytes, unicodeMode }) {
     function handleHexViewByteClick(byteIndex) {
         setActiveView(ACTIVE_VIEW_HEX);
         setSelectedByte(byteIndex);
+    }
+
+    function generateByteGroups(bytes, unicodeMode) {
+        const bytesIterator = makeBytesIterator(bytes);
+        const output = [];
+
+        let result = bytesIterator.next();
+        let index = 0;
+        while (!result.done) {
+            const byte = result.value;
+            const symbolLength = unicodeMode ? getSymbolLength(byte) : 1;
+            const bytesOfSymbol = [byte];
+            const firstByteIndex = index;
+
+            for (let i = 1; i < symbolLength; i++) {
+                result = bytesIterator.next();
+                index++;
+
+                bytesOfSymbol.push(result.value);
+                if (result.done) {
+                    break;
+                }
+            }
+
+            output.push({ bytes: bytesOfSymbol, firstByteIndex });
+
+            result = bytesIterator.next()
+            index++;
+        }
+
+        return output;
     }
 }
 

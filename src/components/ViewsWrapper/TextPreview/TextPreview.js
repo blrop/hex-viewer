@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 
-import { getChar, getSymbolLength, makeBytesIterator } from "../../../common/tools";
+import { getChar } from "../../../common/tools";
 
 import styles from './TextPreview.module.scss';
 
@@ -23,22 +23,22 @@ const Item = ({ empty, index, charCode, onClick, isSelected }) => {
     );
 };
 
-const TextPreview = ({ bytes, unicodeMode, onByteClick, selectedByte }) => {
-    const renderSymbol = (charCode, index, bytesNumber) => {
+const TextPreview = ({ byteGroups, onByteClick, selectedByte }) => {
+    const renderSymbol = (group, firstByteIndex) => {
         const output = [
             <Item
-                key={ index }
-                index={ index }
-                charCode={ charCode }
+                key={ firstByteIndex }
+                index={ firstByteIndex }
+                charCode={ getChar(group) }
                 onClick={ onByteClick }
-                isSelected={ selectedByte === index }
+                isSelected={ selectedByte === firstByteIndex }
             />
         ];
-        for (let i = 1; i < bytesNumber; i++) {
-            const innerByteIndex = index + i;
+        for (let i = 1; i < group.length; i++) {
+            const innerByteIndex = firstByteIndex + i;
             output.push(
                 <Item
-                    key={`${ index }-${ i }`}
+                    key={ `${ firstByteIndex }-${ i }` }
                     empty={ true }
                     index={ innerByteIndex }
                     onClick={ onByteClick }
@@ -49,33 +49,7 @@ const TextPreview = ({ bytes, unicodeMode, onByteClick, selectedByte }) => {
         return output;
     };
 
-    const bytesIterator = makeBytesIterator(bytes);
-    const output = [];
-    let result = bytesIterator.next();
-    let index = 0;
-    while (!result.done) {
-        const byte = result.value;
-        const symbolLength = unicodeMode ? getSymbolLength(byte) : 1;
-        const bytesOfSymbol = [byte];
-        const firstByteIndex = index;
-
-        for (let i = 1; i < symbolLength; i++) {
-            result = bytesIterator.next();
-            index++;
-
-            bytesOfSymbol.push(result.value);
-            if (result.done) {
-                break;
-            }
-        }
-
-        output.push(renderSymbol(getChar(bytesOfSymbol), firstByteIndex, bytesOfSymbol.length));
-
-        result = bytesIterator.next()
-        index++;
-    }
-
-    return output;
+    return byteGroups.map((group) => renderSymbol(group.bytes, group.firstByteIndex));
 };
 
 export default TextPreview;
