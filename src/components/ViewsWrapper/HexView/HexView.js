@@ -2,7 +2,7 @@ import classNames from 'classnames';
 
 import styles from './HexView.module.scss';
 
-function Item({ index, value, onClick, isSelected, empty }) {
+function Item({ index, value, onClick, isSelected, isEmpty, isSecondarySelected }) {
     function toHex(number) {
         return (number < 16 ? '0' : '') + number.toString(16);
     }
@@ -14,8 +14,9 @@ function Item({ index, value, onClick, isSelected, empty }) {
             onClick={ handleClick }
             className={
                 classNames(styles.value, {
-                    [styles['value--empty']]: empty,
                     [styles['value--selected']]: isSelected,
+                    [styles['value--empty']]: isEmpty,
+                    [styles['value--secondary-selected']]: isSecondarySelected,
                 })
             }
         >
@@ -24,15 +25,20 @@ function Item({ index, value, onClick, isSelected, empty }) {
     );
 }
 
-function HexView({ byteGroups, onByteClick, selectedByte }) {
+function HexView({ byteGroups, onByteClick, selectedByteIndex }) {
     const renderByte = (group, firstByteIndex) => {
+        const isSecondarySelected = (currentIndex) =>
+            firstByteIndex <= selectedByteIndex  && selectedByteIndex < (firstByteIndex + group.length) &&
+            selectedByteIndex !== currentIndex;
+
         const output = [
             <Item
                 key={ firstByteIndex }
                 index={ firstByteIndex }
                 value={ group[0] }
                 onClick={ onByteClick }
-                isSelected={ selectedByte === firstByteIndex }
+                isSelected={ selectedByteIndex === firstByteIndex }
+                isSecondarySelected={ isSecondarySelected(firstByteIndex) }
             />
         ];
         for (let i = 1; i < group.length; i++) {
@@ -40,16 +46,16 @@ function HexView({ byteGroups, onByteClick, selectedByte }) {
             output.push(
                 <Item
                     key={ `${ firstByteIndex }-${ i }` }
-                    empty={ true }
                     index={ innerByteIndex }
                     value={ group[i] }
                     onClick={ onByteClick }
-                    isSelected={ selectedByte === innerByteIndex }
+                    isSelected={ selectedByteIndex === innerByteIndex }
+                    isEmpty={ true }
+                    isSecondarySelected={ isSecondarySelected(innerByteIndex) }
                 />
             );
         }
         return output;
-
     };
 
     return byteGroups.map((group) => renderByte(group.bytes, group.firstByteIndex));

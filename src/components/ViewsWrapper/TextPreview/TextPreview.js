@@ -4,7 +4,7 @@ import { getChar } from "../../../common/tools";
 
 import styles from './TextPreview.module.scss';
 
-const Item = ({ empty, index, charCode, onClick, isSelected }) => {
+const Item = ({ index, charCode, onClick, isSelected, isEmpty, isSecondarySelected }) => {
     const handleClick = () => onClick(index);
 
     return (
@@ -12,8 +12,9 @@ const Item = ({ empty, index, charCode, onClick, isSelected }) => {
             data-index={ index }
             className={
                 classNames(styles.value, {
-                    [styles['value--empty']]: empty,
                     [styles['value--selected']]: isSelected,
+                    [styles['value--empty']]: isEmpty,
+                    [styles['value--secondary-selected']]: isSecondarySelected,
                 })
             }
             onClick={ handleClick }
@@ -23,15 +24,20 @@ const Item = ({ empty, index, charCode, onClick, isSelected }) => {
     );
 };
 
-const TextPreview = ({ byteGroups, onByteClick, selectedByte }) => {
+const TextPreview = ({ byteGroups, onByteClick, selectedByteIndex }) => {
     const renderSymbol = (group, firstByteIndex) => {
+        const isSecondarySelected = (currentIndex) =>
+            firstByteIndex <= selectedByteIndex  && selectedByteIndex < (firstByteIndex + group.length) &&
+            selectedByteIndex !== currentIndex;
+
         const output = [
             <Item
                 key={ firstByteIndex }
                 index={ firstByteIndex }
                 charCode={ getChar(group) }
                 onClick={ onByteClick }
-                isSelected={ selectedByte === firstByteIndex }
+                isSelected={ selectedByteIndex === firstByteIndex }
+                isSecondarySelected={ isSecondarySelected(firstByteIndex) }
             />
         ];
         for (let i = 1; i < group.length; i++) {
@@ -39,10 +45,11 @@ const TextPreview = ({ byteGroups, onByteClick, selectedByte }) => {
             output.push(
                 <Item
                     key={ `${ firstByteIndex }-${ i }` }
-                    empty={ true }
                     index={ innerByteIndex }
                     onClick={ onByteClick }
-                    isSelected={ selectedByte === innerByteIndex }
+                    isSelected={ selectedByteIndex === innerByteIndex }
+                    isEmpty={ true }
+                    isSecondarySelected={ isSecondarySelected(innerByteIndex) }
                 />
             );
         }

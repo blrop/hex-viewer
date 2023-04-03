@@ -8,7 +8,7 @@ import styles from './ViewsWrapper.module.scss';
 import { getSymbolLength, makeBytesIterator } from "../../common/tools";
 
 function ViewsWrapper({ bytes, unicodeMode }) {
-    const [selectedByte, setSelectedByte] = useState();
+    const [selectedByteIndex, setSelectedByteIndex] = useState();
     const [activeView, setActiveView] = useState(ACTIVE_VIEW_NONE);
 
     const byteGroups = generateByteGroups(bytes, unicodeMode);
@@ -19,7 +19,7 @@ function ViewsWrapper({ bytes, unicodeMode }) {
                 <HexView
                     byteGroups={ byteGroups }
                     onByteClick={ handleHexViewByteClick }
-                    selectedByte={ selectedByte }
+                    selectedByteIndex={ selectedByteIndex }
                 />
             </div>
 
@@ -29,7 +29,7 @@ function ViewsWrapper({ bytes, unicodeMode }) {
                 <TextPreview
                     byteGroups={ byteGroups }
                     onByteClick={ handleTextViewByteClick }
-                    selectedByte={ selectedByte }
+                    selectedByteIndex={ selectedByteIndex }
                 />
             </div>
         </div>
@@ -37,12 +37,12 @@ function ViewsWrapper({ bytes, unicodeMode }) {
 
     function handleTextViewByteClick(byteIndex) {
         setActiveView(ACTIVE_VIEW_TEXT);
-        setSelectedByte(byteIndex);
+        setSelectedByteIndex(byteIndex);
     }
 
     function handleHexViewByteClick(byteIndex) {
         setActiveView(ACTIVE_VIEW_HEX);
-        setSelectedByte(byteIndex);
+        setSelectedByteIndex(byteIndex);
     }
 
     function generateByteGroups(bytes, unicodeMode) {

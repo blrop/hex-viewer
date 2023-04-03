@@ -13,6 +13,10 @@
         background: #ccc;
     }
 
+    &--secondary-selected {
+        background: #efa2a2;
+    }
+
     &--selected {
         background: $selected-color;
 
