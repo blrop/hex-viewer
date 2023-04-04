@@ -49,8 +49,8 @@ const TextViewItem = ({ index, value, onClick, isSelected, isEmpty, isSecondaryS
 
 
 function CommonView({ byteGroups, onByteClick, selectedByteIndex, viewType }) {
-    const renderByte = (group, firstByteIndex, selectedByteIndex) => {
-        const renderItem = ({ viewType, bytes, firstByteIndex, indexInGroup, selectedByteIndex }) => {
+    const renderGroup = (group, firstByteIndex, selectedByteIndex) => {
+        const renderByte = ({ viewType, bytes, firstByteIndex, indexInGroup, selectedByteIndex }) => {
             const isSecondarySelected = ({ currentIndex, firstByteIndex, selectedByteIndex, totalBytesInGroup }) =>
                 firstByteIndex <= selectedByteIndex  && selectedByteIndex < (firstByteIndex + totalBytesInGroup) &&
                 selectedByteIndex !== currentIndex;
@@ -96,13 +96,13 @@ function CommonView({ byteGroups, onByteClick, selectedByteIndex, viewType }) {
             selectedByteIndex,
         };
 
-        const item = renderItem({
+        const item = renderByte({
             ...itemParams,
             indexInGroup: 0,
         });
         const output = [item];
         for (let i = 1; i < group.length; i++) {
-            const item = renderItem({
+            const item = renderByte({
                 ...itemParams,
                 indexInGroup: i,
             })
@@ -111,7 +111,7 @@ function CommonView({ byteGroups, onByteClick, selectedByteIndex, viewType }) {
         return output;
     };
 
-    return byteGroups.map((group) => renderByte(group.bytes, group.firstByteIndex, selectedByteIndex));
+    return byteGroups.map((group) => renderGroup(group.bytes, group.firstByteIndex, selectedByteIndex));
 }
 
 export default CommonView;
