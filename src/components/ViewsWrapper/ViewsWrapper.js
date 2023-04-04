@@ -7,6 +7,37 @@ import View from "./View/View";
 import styles from './ViewsWrapper.module.scss';
 import { getSymbolLength, makeBytesIterator } from "../../common/tools";
 
+const generateByteGroups = (bytes, unicodeMode) => {
+    const bytesIterator = makeBytesIterator(bytes);
+    const output = [];
+
+    let result = bytesIterator.next();
+    let index = 0;
+    while (!result.done) {
+        const byte = result.value;
+        const symbolLength = unicodeMode ? getSymbolLength(byte) : 1;
+        const bytesOfSymbol = [byte];
+        const firstByteIndex = index;
+
+        for (let i = 1; i < symbolLength; i++) {
+            result = bytesIterator.next();
+            index++;
+
+            bytesOfSymbol.push(result.value);
+            if (result.done) {
+                break;
+            }
+        }
+
+        output.push({ bytes: bytesOfSymbol, firstByteIndex });
+
+        result = bytesIterator.next()
+        index++;
+    }
+
+    return output;
+}
+
 function ViewsWrapper({ bytes, unicodeMode }) {
     const [selectedByteIndex, setSelectedByteIndex] = useState();
     const [activeView, setActiveView] = useState(VIEW_NONE);
@@ -47,36 +78,6 @@ function ViewsWrapper({ bytes, unicodeMode }) {
         setSelectedByteIndex(byteIndex);
     }
 
-    function generateByteGroups(bytes, unicodeMode) {
-        const bytesIterator = makeBytesIterator(bytes);
-        const output = [];
-
-        let result = bytesIterator.next();
-        let index = 0;
-        while (!result.done) {
-            const byte = result.value;
-            const symbolLength = unicodeMode ? getSymbolLength(byte) : 1;
-            const bytesOfSymbol = [byte];
-            const firstByteIndex = index;
-
-            for (let i = 1; i < symbolLength; i++) {
-                result = bytesIterator.next();
-                index++;
-
-                bytesOfSymbol.push(result.value);
-                if (result.done) {
-                    break;
-                }
-            }
-
-            output.push({ bytes: bytesOfSymbol, firstByteIndex });
-
-            result = bytesIterator.next()
-            index++;
-        }
-
-        return output;
-    }
 }
 
 export default ViewsWrapper;
