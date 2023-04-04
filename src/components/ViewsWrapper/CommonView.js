@@ -4,8 +4,21 @@ import styles from './CommonView.module.scss';
 import { VIEW_HEX, VIEW_TEXT } from "../../common/constants";
 import { getChar } from "../../common/tools";
 
-function CommonItem({ index, value, onClick, isSelected, isEmpty, isSecondarySelected }) {
+function CommonItem({ viewType, index, onClick, isSelected, isEmpty, isSecondarySelected, bytes, indexInGroup }) {
+    function toHex(number) {
+        return (number < 16 ? '0' : '') + number.toString(16);
+    }
+
     const handleClick = () => onClick(index);
+
+    let valueToShow;
+    if (viewType === VIEW_HEX) {
+        valueToShow = toHex(bytes[indexInGroup]);
+    } else if (viewType === VIEW_TEXT) {
+        valueToShow = indexInGroup === 0 ? String.fromCharCode(getChar(bytes)) : null;
+    } else {
+        return null;
+    }
 
     return (
         <div
@@ -18,41 +31,10 @@ function CommonItem({ index, value, onClick, isSelected, isEmpty, isSecondarySel
                 })
             }
         >
-            { value }
+            { valueToShow }
         </div>
     );
 }
-
-function HexViewItem({ index, value, onClick, isSelected, isEmpty, isSecondarySelected }) {
-    function toHex(number) {
-        return (number < 16 ? '0' : '') + number.toString(16);
-    }
-
-    return (
-        <CommonItem
-            index={ index }
-            onClick={ onClick }
-            isSelected={ isSelected }
-            isEmpty={ isEmpty }
-            isSecondarySelected={ isSecondarySelected }
-            value={ toHex(value) }
-        />
-    );
-}
-
-const TextViewItem = ({ index, value, onClick, isSelected, isEmpty, isSecondarySelected }) => {
-    return (
-        <CommonItem
-            index={ index }
-            onClick={ onClick }
-            isSelected={ isSelected }
-            isEmpty={ isEmpty }
-            isSecondarySelected={ isSecondarySelected }
-            value={ value && String.fromCharCode(value) }
-        />
-    );
-};
-
 
 function CommonView({ byteGroups, onByteClick, selectedByteIndex, viewType }) {
     const renderGroup = (group, firstByteIndex, selectedByteIndex) => {
@@ -60,18 +42,6 @@ function CommonView({ byteGroups, onByteClick, selectedByteIndex, viewType }) {
             const isSecondarySelected = ({ currentIndex, firstByteIndex, selectedByteIndex, totalBytesInGroup }) =>
                 firstByteIndex <= selectedByteIndex && selectedByteIndex < (firstByteIndex + totalBytesInGroup) &&
                 selectedByteIndex !== currentIndex;
-
-            let Component;
-            let value;
-            if (viewType === VIEW_HEX) {
-                Component = HexViewItem;
-                value = bytes[indexInGroup];
-            } else if (viewType === VIEW_TEXT) {
-                Component = TextViewItem;
-                value = indexInGroup === 0 ? getChar(bytes) : null;
-            } else {
-                return null;
-            }
 
             const innerByteIndex = firstByteIndex + indexInGroup;
             const isSecondarySelectedValue = isSecondarySelected({
@@ -82,14 +52,16 @@ function CommonView({ byteGroups, onByteClick, selectedByteIndex, viewType }) {
             });
 
             return (
-                <Component
+                <CommonItem
+                    viewType={viewType}
                     key={ `${ firstByteIndex }-${ indexInGroup }` }
                     index={ innerByteIndex }
-                    value={ value }
                     onClick={ onByteClick }
                     isSelected={ selectedByteIndex === innerByteIndex }
                     isEmpty={ indexInGroup !== 0 }
                     isSecondarySelected={ isSecondarySelectedValue }
+                    bytes={bytes}
+                    indexInGroup={indexInGroup}
                 />
             );
         };
