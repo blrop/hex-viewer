@@ -1,10 +1,11 @@
 import classNames from 'classnames';
 
-import styles from './CommonView.module.scss';
 import { VIEW_HEX, VIEW_TEXT } from "../../common/constants";
 import { getChar } from "../../common/tools";
 
-function CommonItem({ viewType, index, onClick, isSelected, isEmpty, isSecondarySelected, bytes, indexInGroup }) {
+import styles from './View.module.scss';
+
+function Item({ viewType, index, onClick, isSelected, isEmpty, isSecondarySelected, bytes, indexInGroup }) {
     function toHex(number) {
         return (number < 16 ? '0' : '') + number.toString(16);
     }
@@ -36,7 +37,7 @@ function CommonItem({ viewType, index, onClick, isSelected, isEmpty, isSecondary
     );
 }
 
-function CommonView({ byteGroups, onByteClick, selectedByteIndex, viewType }) {
+function View({ byteGroups, onByteClick, selectedByteIndex, viewType }) {
     const renderGroup = (group, firstByteIndex, selectedByteIndex) => {
         const renderByte = ({ viewType, bytes, firstByteIndex, indexInGroup, selectedByteIndex }) => {
             const isSecondarySelected = ({ currentIndex, firstByteIndex, selectedByteIndex, totalBytesInGroup }) =>
@@ -52,7 +53,7 @@ function CommonView({ byteGroups, onByteClick, selectedByteIndex, viewType }) {
             });
 
             return (
-                <CommonItem
+                <Item
                     viewType={viewType}
                     key={ `${ firstByteIndex }-${ indexInGroup }` }
                     index={ innerByteIndex }
@@ -92,4 +93,4 @@ function CommonView({ byteGroups, onByteClick, selectedByteIndex, viewType }) {
     return byteGroups.map((group) => renderGroup(group.bytes, group.firstByteIndex, selectedByteIndex));
 }
 
-export default CommonView;
+export default View;

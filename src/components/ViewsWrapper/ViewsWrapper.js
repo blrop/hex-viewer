@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import classNames from "classnames";
 import { VIEW_HEX, VIEW_TEXT, VIEW_NONE } from "../../common/constants";
-import CommonView from "./CommonView";
+import View from "./View";
 
 import styles from './ViewsWrapper.module.scss';
 import { getSymbolLength, makeBytesIterator } from "../../common/tools";
@@ -15,7 +15,7 @@ function ViewsWrapper({ bytes, unicodeMode }) {
     return (
         <div className={ styles.wrapper }>
             <div className={ classNames(styles.hexView, { 'active-view': activeView === VIEW_HEX }) }>
-                <CommonView
+                <View
                     viewType={VIEW_HEX}
                     byteGroups={ byteGroups }
                     selectedByteIndex={ selectedByteIndex }
@@ -26,7 +26,7 @@ function ViewsWrapper({ bytes, unicodeMode }) {
             <div className={ styles.delimiter }></div>
 
             <div className={ classNames(styles.textView, { 'active-view': activeView === VIEW_TEXT }) }>
-                <CommonView
+                <View
                     viewType={VIEW_TEXT}
                     byteGroups={ byteGroups }
                     selectedByteIndex={ selectedByteIndex }
