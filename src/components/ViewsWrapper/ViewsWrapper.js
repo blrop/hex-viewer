@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import classNames from "classnames";
+
 import { VIEW_HEX, VIEW_TEXT, VIEW_NONE } from "../../common/constants";
-import View from "./View";
+import View from "./View/View";
 
 import styles from './ViewsWrapper.module.scss';
 import { getSymbolLength, makeBytesIterator } from "../../common/tools";
