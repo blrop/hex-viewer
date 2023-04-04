@@ -1,47 +1,48 @@
 import { useState } from 'react';
 import classNames from "classnames";
-import { ACTIVE_VIEW_HEX, ACTIVE_VIEW_TEXT, ACTIVE_VIEW_NONE } from "../../common/constants";
-import HexView from "./HexView/HexView";
-import TextPreview from "./TextPreview/TextPreview";
+import { VIEW_HEX, VIEW_TEXT, VIEW_NONE } from "../../common/constants";
+import CommonView from "./CommonView";
 
 import styles from './ViewsWrapper.module.scss';
 import { getSymbolLength, makeBytesIterator } from "../../common/tools";
 
 function ViewsWrapper({ bytes, unicodeMode }) {
     const [selectedByteIndex, setSelectedByteIndex] = useState();
-    const [activeView, setActiveView] = useState(ACTIVE_VIEW_NONE);
+    const [activeView, setActiveView] = useState(VIEW_NONE);
 
     const byteGroups = generateByteGroups(bytes, unicodeMode);
 
     return (
         <div className={ styles.wrapper }>
-            <div className={ classNames(styles.hexView, { 'active-view': activeView === ACTIVE_VIEW_HEX }) }>
-                <HexView
+            <div className={ classNames(styles.hexView, { 'active-view': activeView === VIEW_HEX }) }>
+                <CommonView
                     byteGroups={ byteGroups }
                     onByteClick={ handleHexViewByteClick }
                     selectedByteIndex={ selectedByteIndex }
+                    viewType={VIEW_HEX}
                 />
             </div>
 
             <div className={ styles.delimiter }></div>
 
-            <div className={ classNames(styles.textView, { 'active-view': activeView === ACTIVE_VIEW_TEXT }) }>
-                <TextPreview
+            <div className={ classNames(styles.textView, { 'active-view': activeView === VIEW_TEXT }) }>
+                <CommonView
                     byteGroups={ byteGroups }
                     onByteClick={ handleTextViewByteClick }
                     selectedByteIndex={ selectedByteIndex }
+                    viewType={VIEW_TEXT}
                 />
             </div>
         </div>
     );
 
     function handleTextViewByteClick(byteIndex) {
-        setActiveView(ACTIVE_VIEW_TEXT);
+        setActiveView(VIEW_TEXT);
         setSelectedByteIndex(byteIndex);
     }
 
     function handleHexViewByteClick(byteIndex) {
-        setActiveView(ACTIVE_VIEW_HEX);
+        setActiveView(VIEW_HEX);
         setSelectedByteIndex(byteIndex);
     }
 

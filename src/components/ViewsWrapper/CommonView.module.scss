@@ -1,12 +1,12 @@
-@import '../../../common/constants';
+@import '../../common/constants';
 
 .value {
     $self: &;
     height: $byte-height;
 
     &:hover {
-        cursor: pointer;
         background: $byte-hover-color;
+        cursor: pointer;
     }
 
     &--empty {
