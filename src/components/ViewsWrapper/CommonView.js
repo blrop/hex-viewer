@@ -49,68 +49,69 @@ const TextViewItem = ({ index, value, onClick, isSelected, isEmpty, isSecondaryS
 
 
 function CommonView({ byteGroups, onByteClick, selectedByteIndex, viewType }) {
-    const renderByte = (group, firstByteIndex) => {
-        const renderItem = ({ viewType, key, index, isSelected, isEmpty, isSecondarySelected, currentIndex, bytes }) => {
+    const renderByte = (group, firstByteIndex, selectedByteIndex) => {
+        const renderItem = ({ viewType, bytes, firstByteIndex, indexInGroup, selectedByteIndex }) => {
+            const isSecondarySelected = ({ currentIndex, firstByteIndex, selectedByteIndex, totalBytesInGroup }) =>
+                firstByteIndex <= selectedByteIndex  && selectedByteIndex < (firstByteIndex + totalBytesInGroup) &&
+                selectedByteIndex !== currentIndex;
+
             let Component;
             let value;
             if (viewType === VIEW_HEX) {
                 Component = HexViewItem;
-                value = bytes[currentIndex];
+                value = bytes[indexInGroup];
             } else if (viewType === VIEW_TEXT) {
                 Component = TextViewItem;
-                value = currentIndex === 0 ? getChar(group) : null;
+                value = indexInGroup === 0 ? getChar(bytes) : null;
             } else {
                 return null;
             }
 
+            const innerByteIndex = firstByteIndex + indexInGroup;
+            const isSecondarySelectedValue = isSecondarySelected({
+                currentIndex: innerByteIndex,
+                firstByteIndex,
+                selectedByteIndex,
+                totalBytesInGroup: bytes.length
+            });
+
             return (
                 <Component
-                    key={ key }
-                    index={ index }
+                    key={ `${ firstByteIndex }-${ indexInGroup }` }
+                    index={ innerByteIndex }
                     value={ value }
                     onClick={ onByteClick }
-                    isSelected={ isSelected }
-                    isEmpty={isEmpty}
-                    isSecondarySelected={ isSecondarySelected }
+                    isSelected={ selectedByteIndex === innerByteIndex }
+                    isEmpty={ indexInGroup !== 0 }
+                    isSecondarySelected={ isSecondarySelectedValue }
                 />
             );
         };
 
-        const isSecondarySelected = (currentIndex) =>
-            firstByteIndex <= selectedByteIndex  && selectedByteIndex < (firstByteIndex + group.length) &&
-            selectedByteIndex !== currentIndex;
+        const itemParams = {
+            viewType,
+            bytes: group,
+            firstByteIndex: firstByteIndex,
+            indexInGroup: 0,
+            selectedByteIndex,
+        };
 
         const item = renderItem({
-            viewType,
-            key: firstByteIndex,
-            index: firstByteIndex,
-            isSelected: selectedByteIndex === firstByteIndex,
-            isEmpty: false,
-            isSecondarySelected: isSecondarySelected(firstByteIndex),
-
-            currentIndex: 0,
-            bytes: group,
+            ...itemParams,
+            indexInGroup: 0,
         });
         const output = [item];
         for (let i = 1; i < group.length; i++) {
-            const innerByteIndex = firstByteIndex + i;
             const item = renderItem({
-                viewType,
-                key: `${ firstByteIndex }-${ i }`,
-                index: innerByteIndex,
-                isSelected: selectedByteIndex === innerByteIndex,
-                isEmpty: true,
-                isSecondarySelected: isSecondarySelected(innerByteIndex),
-
-                currentIndex: i,
-                bytes: group,
+                ...itemParams,
+                indexInGroup: i,
             })
             output.push(item);
         }
         return output;
     };
 
-    return byteGroups.map((group) => renderByte(group.bytes, group.firstByteIndex));
+    return byteGroups.map((group) => renderByte(group.bytes, group.firstByteIndex, selectedByteIndex));
 }
 
 export default CommonView;
