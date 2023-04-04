@@ -16,10 +16,10 @@ function ViewsWrapper({ bytes, unicodeMode }) {
         <div className={ styles.wrapper }>
             <div className={ classNames(styles.hexView, { 'active-view': activeView === VIEW_HEX }) }>
                 <CommonView
-                    byteGroups={ byteGroups }
-                    onByteClick={ handleHexViewByteClick }
-                    selectedByteIndex={ selectedByteIndex }
                     viewType={VIEW_HEX}
+                    byteGroups={ byteGroups }
+                    selectedByteIndex={ selectedByteIndex }
+                    onByteClick={ handleHexViewByteClick }
                 />
             </div>
 
@@ -27,10 +27,10 @@ function ViewsWrapper({ bytes, unicodeMode }) {
 
             <div className={ classNames(styles.textView, { 'active-view': activeView === VIEW_TEXT }) }>
                 <CommonView
-                    byteGroups={ byteGroups }
-                    onByteClick={ handleTextViewByteClick }
-                    selectedByteIndex={ selectedByteIndex }
                     viewType={VIEW_TEXT}
+                    byteGroups={ byteGroups }
+                    selectedByteIndex={ selectedByteIndex }
+                    onByteClick={ handleTextViewByteClick }
                 />
             </div>
         </div>

@@ -4,46 +4,52 @@ import styles from './CommonView.module.scss';
 import { VIEW_HEX, VIEW_TEXT } from "../../common/constants";
 import { getChar } from "../../common/tools";
 
+function CommonItem({ index, value, onClick, isSelected, isEmpty, isSecondarySelected }) {
+    const handleClick = () => onClick(index);
+
+    return (
+        <div
+            onClick={ handleClick }
+            className={
+                classNames(styles.value, {
+                    [styles['value--selected']]: isSelected,
+                    [styles['value--empty']]: isEmpty,
+                    [styles['value--secondary-selected']]: isSecondarySelected,
+                })
+            }
+        >
+            { value }
+        </div>
+    );
+}
+
 function HexViewItem({ index, value, onClick, isSelected, isEmpty, isSecondarySelected }) {
     function toHex(number) {
         return (number < 16 ? '0' : '') + number.toString(16);
     }
 
-    const handleClick = () => onClick(index);
-
     return (
-        <div
-            onClick={ handleClick }
-            className={
-                classNames(styles.value, {
-                    [styles['value--selected']]: isSelected,
-                    [styles['value--empty']]: isEmpty,
-                    [styles['value--secondary-selected']]: isSecondarySelected,
-                })
-            }
-        >
-            { toHex(value) }
-        </div>
+        <CommonItem
+            index={ index }
+            onClick={ onClick }
+            isSelected={ isSelected }
+            isEmpty={ isEmpty }
+            isSecondarySelected={ isSecondarySelected }
+            value={ toHex(value) }
+        />
     );
 }
 
 const TextViewItem = ({ index, value, onClick, isSelected, isEmpty, isSecondarySelected }) => {
-    const handleClick = () => onClick(index);
-
     return (
-        <div
-            data-index={ index }
-            className={
-                classNames(styles.value, {
-                    [styles['value--selected']]: isSelected,
-                    [styles['value--empty']]: isEmpty,
-                    [styles['value--secondary-selected']]: isSecondarySelected,
-                })
-            }
-            onClick={ handleClick }
-        >
-            { value && String.fromCharCode(value) }
-        </div>
+        <CommonItem
+            index={ index }
+            onClick={ onClick }
+            isSelected={ isSelected }
+            isEmpty={ isEmpty }
+            isSecondarySelected={ isSecondarySelected }
+            value={ value && String.fromCharCode(value) }
+        />
     );
 };
 
@@ -52,7 +58,7 @@ function CommonView({ byteGroups, onByteClick, selectedByteIndex, viewType }) {
     const renderGroup = (group, firstByteIndex, selectedByteIndex) => {
         const renderByte = ({ viewType, bytes, firstByteIndex, indexInGroup, selectedByteIndex }) => {
             const isSecondarySelected = ({ currentIndex, firstByteIndex, selectedByteIndex, totalBytesInGroup }) =>
-                firstByteIndex <= selectedByteIndex  && selectedByteIndex < (firstByteIndex + totalBytesInGroup) &&
+                firstByteIndex <= selectedByteIndex && selectedByteIndex < (firstByteIndex + totalBytesInGroup) &&
                 selectedByteIndex !== currentIndex;
 
             let Component;
