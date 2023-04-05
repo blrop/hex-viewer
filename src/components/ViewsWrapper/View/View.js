@@ -15,15 +15,14 @@ const renderByte = ({ viewType, bytes, firstByteIndex, indexInGroup, selectedByt
 
     return (
         <Item
-            viewType={viewType}
+            viewType={ viewType }
             key={ `${ firstByteIndex }-${ indexInGroup }` }
             index={ innerByteIndex }
             onClick={ onByteClick }
             isSelected={ selectedByteIndex === innerByteIndex }
-            isEmpty={ indexInGroup !== 0 }
             isSecondarySelected={ isSecondarySelectedValue }
-            bytes={bytes}
-            indexInGroup={indexInGroup}
+            bytes={ bytes }
+            indexInGroup={ indexInGroup }
         />
     );
 };

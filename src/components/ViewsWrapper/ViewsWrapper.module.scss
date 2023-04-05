@@ -1,29 +1,35 @@
 @import '../../common/constants';
 
 .wrapper {
-  display: flex;
-  gap: 20px;
+    display: flex;
+    gap: 20px;
 }
 
-.hexView {
-  display: grid;
-  grid-template-columns: repeat($bytes-per-line, 1fr);
-  text-transform: uppercase;
-  gap: 5px 15px;
-  font-family: monospace;
-  font-size: 18px;
+.view {
+    border: 1px solid $dark-1;
+    font-size: 18px;
+    display: grid;
+    grid-template-columns: repeat(24, 1fr);
+    font-family: monospace;
+    padding: 3px;
+
+    &--hex {
+        text-transform: uppercase;
+        gap: 5px 15px;
+        color: $green;
+    }
+
+    &--text {
+        color: $yellow;
+    }
+}
+
+:global(.active-view) {
+    border-color: $yellow;
 }
 
 .delimiter {
-  background: #bdbdbd;
-  width: 1px;
-  flex-shrink: 0;
+    background: $gray-2;
+    width: 1px;
+    flex-shrink: 0;
 }
-
-.textView {
-  display: grid;
-  grid-template-columns: repeat($bytes-per-line, 1fr);
-  font-family: monospace;
-  font-size: 18px;
-}
-

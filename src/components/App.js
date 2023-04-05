@@ -24,7 +24,7 @@ function App() {
                 <div className={ styles['file-select'] }>
                     <div className={ styles['file-select__title'] }>or drop file here:</div>
                     <div
-                        className={ classNames(styles['file-select__drop-zone'], {[styles.dragOver]: dragOver}) }
+                        className={ classNames(styles['file-select__drop-zone'], { [styles.dragOver]: dragOver }) }
                         onDragOver={ handleDragOver }
                         onDrop={ handleDrop }
                         onDragLeave={ handleDragLeave }
@@ -49,13 +49,13 @@ function App() {
                     </div>
                 ) }
 
-                <label>
+                <label className={styles['unicode-mode']}>
                     <input type="checkbox" checked={ unicodeMode } onChange={ handleUnicodeModeChange }/>
                     Unicode mode
                 </label>
             </div>
 
-            { fileBytes && <ViewsWrapper bytes={fileBytes} unicodeMode={unicodeMode} /> }
+            { fileBytes && <ViewsWrapper bytes={ fileBytes } unicodeMode={ unicodeMode }/> }
         </div>
     );
 

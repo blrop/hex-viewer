@@ -46,9 +46,9 @@ function ViewsWrapper({ bytes, unicodeMode }) {
 
     return (
         <div className={ styles.wrapper }>
-            <div className={ classNames(styles.hexView, { 'active-view': activeView === VIEW_HEX }) }>
+            <div className={ classNames(styles.view, styles['view--hex'], { 'active-view': activeView === VIEW_HEX }) }>
                 <View
-                    viewType={VIEW_HEX}
+                    viewType={ VIEW_HEX }
                     byteGroups={ byteGroups }
                     selectedByteIndex={ selectedByteIndex }
                     onByteClick={ handleHexViewByteClick }
@@ -57,9 +57,9 @@ function ViewsWrapper({ bytes, unicodeMode }) {
 
             <div className={ styles.delimiter }></div>
 
-            <div className={ classNames(styles.textView, { 'active-view': activeView === VIEW_TEXT }) }>
+            <div className={ classNames(styles.view, styles['view--text'], { 'active-view': activeView === VIEW_TEXT }) }>
                 <View
-                    viewType={VIEW_TEXT}
+                    viewType={ VIEW_TEXT }
                     byteGroups={ byteGroups }
                     selectedByteIndex={ selectedByteIndex }
                     onByteClick={ handleTextViewByteClick }

@@ -1,5 +1,13 @@
+@import '../common/constants';
+
+::selection {
+    color: $dark-1;
+    background: $green;
+}
+
 body {
-    background: #737373;
+    background: $dark-1;
+    color: $blue;
 }
 
 .app {
@@ -25,10 +33,10 @@ body {
         &__drop-zone {
             height: 50px;
             width: 300px;
-            border: 5px dashed #b2b3b3;
+            border: 5px dashed $gray-2;
 
             &.dragOver {
-                border-color: #769db6;
+                border-color: $green;
             }
         }
     }
@@ -36,12 +44,12 @@ body {
     .fileSelectLabel {
         cursor: pointer;
         font-weight: bold;
-        color: #fc5;
-        border-bottom: 2px dashed #fc5;
+        color: $red;
+        border-bottom: 2px dashed $red;
 
         &:hover {
-            color: #ff8855;
-            border-color: #ff8855;
+            color: scale-color($red, $lightness: 20%);
+            border-color: scale-color($red, $lightness: 20%);
         }
 
         input {
@@ -63,7 +71,11 @@ body {
     h4 {
         margin: 0;
         display: inline;
-        color: #999;
+        color: $gray-2;
         font-weight: normal;
     }
+}
+
+.unicode-mode {
+    cursor: pointer;
 }

@@ -2,34 +2,25 @@
 
 .value {
     $self: &;
-    height: $byte-height;
+    height: 20px;
 
     &:hover {
-        background: $byte-hover-color;
+        background: $blue;
+        color: $dark-1;
         cursor: pointer;
     }
 
-    &--empty {
-        background: #ccc;
-    }
-
     &--secondary-selected {
-        background: #efa2a2;
+        background: $green;
+        color: $dark-1;
     }
 
     &--selected {
-        background: $selected-color;
-
-        &:hover {
-            background: $selected-color;
-        }
+        background: $yellow;
+        color: $dark-1;
 
         :global(.active-view) & {
-            box-shadow: $active-view-item-shadow;
-        }
-
-        &#{ $self }--empty {
-            background: $selected-empty-color;
+            box-shadow: 2px 2px 0 0 $green;
         }
     }
 }

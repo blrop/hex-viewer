@@ -3,7 +3,7 @@ import { getChar } from "../../../common/tools";
 import classNames from "classnames";
 import styles from "./Item.module.scss";
 
-function Item({ viewType, index, onClick, isSelected, isEmpty, isSecondarySelected, bytes, indexInGroup }) {
+function Item({ viewType, index, onClick, isSelected, isSecondarySelected, bytes, indexInGroup }) {
     function toHex(number) {
         return (number < 16 ? '0' : '') + number.toString(16);
     }
@@ -25,7 +25,6 @@ function Item({ viewType, index, onClick, isSelected, isEmpty, isSecondarySelect
             className={
                 classNames(styles.value, {
                     [styles['value--selected']]: isSelected,
-                    [styles['value--empty']]: isEmpty,
                     [styles['value--secondary-selected']]: isSecondarySelected,
                 })
             }
