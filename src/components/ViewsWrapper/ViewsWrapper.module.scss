@@ -27,9 +27,3 @@
 :global(.active-view) {
     border-color: $yellow;
 }
-
-.delimiter {
-    background: $gray-2;
-    width: 1px;
-    flex-shrink: 0;
-}

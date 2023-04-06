@@ -46,7 +46,15 @@ function ViewsWrapper({ bytes, unicodeMode }) {
 
     return (
         <div className={ styles.wrapper }>
-            <div tabindex="0" className={ classNames(styles.view, styles['view--hex'], { 'active-view': activeView === VIEW_HEX }) }>
+            <div
+                tabindex="0"
+                className={ classNames(
+                    'view--hex',
+                    styles['view--hex'],
+                    styles.view,
+                    { 'active-view': activeView === VIEW_HEX }
+                ) }
+            >
                 <View
                     viewType={ VIEW_HEX }
                     byteGroups={ byteGroups }
@@ -55,9 +63,15 @@ function ViewsWrapper({ bytes, unicodeMode }) {
                 />
             </div>
 
-            <div className={ styles.delimiter }></div>
-
-            <div tabindex="0" className={ classNames(styles.view, styles['view--text'], { 'active-view': activeView === VIEW_TEXT }) }>
+            <div
+                tabindex="0"
+                className={ classNames(
+                    'view--text',
+                    styles['view--text'],
+                    styles.view,
+                    { 'active-view': activeView === VIEW_TEXT }
+                ) }
+            >
                 <View
                     viewType={ VIEW_TEXT }
                     byteGroups={ byteGroups }

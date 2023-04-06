@@ -5,6 +5,10 @@
     height: 20px;
     text-align: center;
 
+    :global(.view--text) & {
+        width: 12px;
+    }
+
     &:hover {
         background: $blue;
         color: $dark-1;
