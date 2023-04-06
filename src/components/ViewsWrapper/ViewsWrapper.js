@@ -22,11 +22,11 @@ const generateByteGroups = (bytes, unicodeMode) => {
         for (let i = 1; i < symbolLength; i++) {
             result = bytesIterator.next();
             index++;
-
-            bytesOfSymbol.push(result.value);
+            
             if (result.done) {
                 break;
             }
+            bytesOfSymbol.push(result.value);
         }
 
         output.push({ bytes: bytesOfSymbol, firstByteIndex });
@@ -46,7 +46,7 @@ function ViewsWrapper({ bytes, unicodeMode }) {
 
     return (
         <div className={ styles.wrapper }>
-            <div className={ classNames(styles.view, styles['view--hex'], { 'active-view': activeView === VIEW_HEX }) }>
+            <div tabindex="0" className={ classNames(styles.view, styles['view--hex'], { 'active-view': activeView === VIEW_HEX }) }>
                 <View
                     viewType={ VIEW_HEX }
                     byteGroups={ byteGroups }
@@ -57,7 +57,7 @@ function ViewsWrapper({ bytes, unicodeMode }) {
 
             <div className={ styles.delimiter }></div>
 
-            <div className={ classNames(styles.view, styles['view--text'], { 'active-view': activeView === VIEW_TEXT }) }>
+            <div tabindex="0" className={ classNames(styles.view, styles['view--text'], { 'active-view': activeView === VIEW_TEXT }) }>
                 <View
                     viewType={ VIEW_TEXT }
                     byteGroups={ byteGroups }

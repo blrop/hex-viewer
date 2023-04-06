@@ -1,5 +1,5 @@
 import { VIEW_HEX, VIEW_TEXT } from "../../../common/constants";
-import { getChar } from "../../../common/tools";
+import { byteGroupToChar } from "../../../common/tools";
 import classNames from "classnames";
 import styles from "./Item.module.scss";
 
@@ -14,7 +14,7 @@ function Item({ viewType, index, onClick, isSelected, isSecondarySelected, bytes
     if (viewType === VIEW_HEX) {
         valueToShow = toHex(bytes[indexInGroup]);
     } else if (viewType === VIEW_TEXT) {
-        valueToShow = indexInGroup === 0 ? String.fromCharCode(getChar(bytes)) : null;
+        valueToShow = indexInGroup === 0 ? byteGroupToChar(bytes) : null;
     } else {
         return null;
     }

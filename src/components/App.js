@@ -16,7 +16,7 @@ function App() {
     return (
         <div className={ styles.app }>
             <div className={ styles.header }>
-                <label className={ styles.fileSelectLabel }>
+                <label className={ styles.fileSelectLabel } tabindex="0">
                     Choose file
                     <input type="file" onChange={ handleInputFileChange }/>
                 </label>

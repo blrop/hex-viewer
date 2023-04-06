@@ -31,7 +31,7 @@ export const getSymbolLength = (byte) => {
     }
 };
 
-export const getChar = (bytes) => {
+const getChar = (bytes) => {
     const lengthToMask = {
         1: B_0111_1111,
         2: B_0001_1111,
@@ -55,3 +55,11 @@ export const getChar = (bytes) => {
 
     return result;
 }
+
+export const byteGroupToChar = (bytes) => {
+    const charCode = getChar(bytes);
+    if (charCode < 32) {
+        return '.';
+    }
+    return String.fromCharCode(charCode);
+};

@@ -3,6 +3,7 @@
 .value {
     $self: &;
     height: 20px;
+    text-align: center;
 
     &:hover {
         background: $blue;
