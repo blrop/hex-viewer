@@ -2,45 +2,16 @@ import { useState } from 'react';
 import classNames from "classnames";
 
 import { VIEW_HEX, VIEW_TEXT, VIEW_NONE } from "../../common/constants";
+import { generateByteGroups } from "../../common/tools";
 import View from "./View/View";
 
 import styles from './ViewsWrapper.module.scss';
-import { getSymbolLength, makeBytesIterator } from "../../common/tools";
-
-const generateByteGroups = (bytes, unicodeMode) => {
-    const bytesIterator = makeBytesIterator(bytes);
-    const output = [];
-
-    let result = bytesIterator.next();
-    let index = 0;
-    while (!result.done) {
-        const byte = result.value;
-        const symbolLength = unicodeMode ? getSymbolLength(byte) : 1;
-        const bytesOfSymbol = [byte];
-        const firstByteIndex = index;
-
-        for (let i = 1; i < symbolLength; i++) {
-            result = bytesIterator.next();
-            index++;
-            
-            if (result.done) {
-                break;
-            }
-            bytesOfSymbol.push(result.value);
-        }
-
-        output.push({ bytes: bytesOfSymbol, firstByteIndex });
-
-        result = bytesIterator.next()
-        index++;
-    }
-
-    return output;
-}
 
 function ViewsWrapper({ bytes, unicodeMode }) {
-    const [selectedByteIndex, setSelectedByteIndex] = useState();
+    const [selectedByteIndex, setSelectedByteIndex] = useState(-1);
     const [activeView, setActiveView] = useState(VIEW_NONE);
+
+    const rowSize = 24;
 
     const byteGroups = generateByteGroups(bytes, unicodeMode);
 
@@ -54,8 +25,9 @@ function ViewsWrapper({ bytes, unicodeMode }) {
                     styles.view,
                     { 'active-view': activeView === VIEW_HEX }
                 ) }
-                onFocus={setActiveHex}
-                onBlur={handleBlur}
+                onFocus={ setActiveHex }
+                onBlur={ handleBlur }
+                onKeyDown={ handleKeyDown }
             >
                 <View
                     viewType={ VIEW_HEX }
@@ -73,8 +45,9 @@ function ViewsWrapper({ bytes, unicodeMode }) {
                     styles.view,
                     { 'active-view': activeView === VIEW_TEXT }
                 ) }
-                onFocus={setActiveText}
-                onBlur={handleBlur}
+                onFocus={ setActiveText }
+                onBlur={ handleBlur }
+                onKeyDown={ handleKeyDown }
             >
                 <View
                     viewType={ VIEW_TEXT }
@@ -104,6 +77,45 @@ function ViewsWrapper({ bytes, unicodeMode }) {
 
     function handleBlur() {
         setActiveView(VIEW_NONE);
+    }
+
+    function handleKeyDown(e) {
+        switch (e.key) {
+            case 'ArrowLeft': {
+                if (selectedByteIndex > 0) {
+                    setSelectedByteIndex(selectedByteIndex - 1);
+                }
+                break;
+            }
+            case 'ArrowRight': {
+                if (selectedByteIndex < bytes.length) {
+                    setSelectedByteIndex(selectedByteIndex + 1);
+                }
+                break;
+            }
+            case 'ArrowUp': {
+                e.preventDefault();
+
+                const newIndex = selectedByteIndex - rowSize;
+                if (newIndex >= 0) {
+                    setSelectedByteIndex(newIndex);
+                } else {
+                    setSelectedByteIndex(0);
+                }
+                break;
+            }
+            case 'ArrowDown': {
+                e.preventDefault();
+                
+                const newIndex = selectedByteIndex + rowSize;
+                if (newIndex < bytes.length) {
+                    setSelectedByteIndex(newIndex);
+                } else {
+                    setSelectedByteIndex(bytes.length - 1);
+                }
+                break;
+            }
+        }
     }
 }
 

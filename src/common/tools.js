@@ -63,3 +63,34 @@ export const byteGroupToChar = (bytes) => {
     }
     return String.fromCharCode(charCode);
 };
+
+export const generateByteGroups = (bytes, unicodeMode) => {
+    const bytesIterator = makeBytesIterator(bytes);
+    const output = [];
+
+    let result = bytesIterator.next();
+    let index = 0;
+    while (!result.done) {
+        const byte = result.value;
+        const symbolLength = unicodeMode ? getSymbolLength(byte) : 1;
+        const bytesOfSymbol = [byte];
+        const firstByteIndex = index;
+
+        for (let i = 1; i < symbolLength; i++) {
+            result = bytesIterator.next();
+            index++;
+
+            if (result.done) {
+                break;
+            }
+            bytesOfSymbol.push(result.value);
+        }
+
+        output.push({ bytes: bytesOfSymbol, firstByteIndex });
+
+        result = bytesIterator.next()
+        index++;
+    }
+
+    return output;
+}

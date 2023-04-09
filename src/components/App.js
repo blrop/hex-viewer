@@ -49,7 +49,7 @@ function App() {
                     </div>
                 ) }
 
-                <label className={styles['unicode-mode']}>
+                <label className={ styles['unicode-mode'] }>
                     <input type="checkbox" checked={ unicodeMode } onChange={ handleUnicodeModeChange }/>
                     Unicode mode
                 </label>
