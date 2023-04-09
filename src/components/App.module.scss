@@ -14,58 +14,66 @@ body {
     min-height: 100%;
     width: 1200px;
     margin: 0 auto;
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 0;
 }
 
 .header {
     display: flex;
-    align-items: flex-start;
+    align-items: stretch;
     gap: 15px;
-    padding: 10px;
+}
 
-    .file-select {
-        display: flex;
-        flex-direction: column;
+.file-input-label {
+    cursor: pointer;
+    font-weight: bold;
+    color: $red;
+    text-decoration: underline dashed;
+    text-underline-offset: 4px;
+    padding: 4px;
 
-        &__title {
-            font-weight: bold;
-            margin-bottom: 2px;
-        }
-
-        &__drop-zone {
-            height: 50px;
-            width: 300px;
-            border: 5px dashed $gray-2;
-
-            &.dragOver {
-                border-color: $green;
-            }
-        }
+    &:hover {
+        color: scale-color($red, $lightness: 20%);
+        border-color: scale-color($red, $lightness: 20%);
     }
 
-    .fileSelectLabel {
-        cursor: pointer;
+    &:focus-visible {
+        outline: 1px solid $yellow;
+    }
+
+    input {
+        display: none;
+    }
+}
+
+.file-select {
+    display: flex;
+    flex-direction: column;
+
+    &__title {
         font-weight: bold;
-        color: $red;
-        text-decoration: underline dashed;
-        text-underline-offset: 4px;
-        padding: 4px;
+        margin-bottom: 2px;
+    }
 
-        &:hover {
-            color: scale-color($red, $lightness: 20%);
-            border-color: scale-color($red, $lightness: 20%);
-        }
+    &__drop-zone {
+        width: 300px;
+        border: 5px dashed $gray-2;
+        flex-grow: 1;
 
-        &:focus-visible {
-            outline: 1px solid $yellow;
-        }
-
-        input {
-            display: none;
+        &.dragOver {
+            border-color: $green;
         }
     }
 }
 
+
 .file-info {
+    width: 300px;
+
     &__title {
         font-weight: bold;
         margin-bottom: 2px;
@@ -74,6 +82,14 @@ body {
     &__item {
         font-size: 12px;
         margin-bottom: 3px;
+        display: flex;
+        gap: 5px;
+    }
+
+    &__item-value {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     h4 {
@@ -91,4 +107,9 @@ body {
     input:focus-visible {
         outline: 1px solid $yellow;
     }
+}
+
+.status-bar {
+    border: 1px solid $green;
+    padding: 10px;
 }

@@ -3,6 +3,8 @@
 .wrapper {
     display: flex;
     gap: 20px;
+    overflow-y: auto;
+    padding-right: 10px;
 }
 
 .view {
@@ -15,12 +17,13 @@
 
     &--hex {
         text-transform: uppercase;
-        gap: 5px 15px;
+        gap: 5px 10px;
         color: $green;
     }
 
     &--text {
         color: $yellow;
+        gap: 5px 0;
     }
 }
 

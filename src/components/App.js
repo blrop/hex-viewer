@@ -16,7 +16,7 @@ function App() {
     return (
         <div className={ styles.app }>
             <div className={ styles.header }>
-                <label className={ styles.fileSelectLabel } tabIndex="0">
+                <label className={ styles['file-input-label'] } tabIndex="0">
                     Choose file
                     <input type="file" onChange={ handleInputFileChange }/>
                 </label>
@@ -35,16 +35,23 @@ function App() {
                     <div className={ styles['file-info'] }>
                         <div className={ styles['file-info__title'] }>File Info</div>
                         <div className={ styles['file-info__item'] }>
-                            <h4>Name:</h4> { fileInfo.name }<br/>
+                            <h4>Name:</h4>
+                            <span
+                                className={styles['file-info__item-value']}
+                                title={ fileInfo.name }
+                            >{ fileInfo.name }</span>
                         </div>
                         <div className={ styles['file-info__item'] }>
-                            <h4>Size:</h4> { fileInfo.size }<br/>
+                            <h4>Size:</h4>
+                            <span>{ fileInfo.size }</span>
                         </div>
                         <div className={ styles['file-info__item'] }>
-                            <h4>Type:</h4> { fileInfo.type }<br/>
+                            <h4>Type:</h4>
+                            <span>{ fileInfo.type }</span>
                         </div>
                         <div className={ styles['file-info__item'] }>
-                            <h4>Last modified:</h4> { moment(fileInfo.lastModified).format("YYYY.MM.DD HH:mm:ss") }
+                            <h4>Last modified:</h4>
+                            <span>{ moment(fileInfo.lastModified).format("YYYY.MM.DD HH:mm:ss") }</span>
                         </div>
                     </div>
                 ) }
@@ -56,6 +63,8 @@ function App() {
             </div>
 
             { fileBytes && <ViewsWrapper bytes={ fileBytes } unicodeMode={ unicodeMode }/> }
+
+            <div className={styles['status-bar']}></div>
         </div>
     );
 

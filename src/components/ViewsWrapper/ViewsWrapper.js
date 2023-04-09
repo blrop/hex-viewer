@@ -115,6 +115,7 @@ function ViewsWrapper({ bytes, unicodeMode }) {
                 }
                 break;
             }
+            default:
         }
     }
 }
