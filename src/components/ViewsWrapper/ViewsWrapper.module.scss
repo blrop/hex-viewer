@@ -24,6 +24,8 @@
     }
 }
 
-:global(.active-view) {
+.view:global(.active-view),
+.view:focus {
     border-color: $yellow;
+    outline: none;
 }

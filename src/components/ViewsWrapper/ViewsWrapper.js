@@ -47,13 +47,15 @@ function ViewsWrapper({ bytes, unicodeMode }) {
     return (
         <div className={ styles.wrapper }>
             <div
-                tabindex="0"
+                tabIndex="0"
                 className={ classNames(
                     'view--hex',
                     styles['view--hex'],
                     styles.view,
                     { 'active-view': activeView === VIEW_HEX }
                 ) }
+                onFocus={setActiveHex}
+                onBlur={handleBlur}
             >
                 <View
                     viewType={ VIEW_HEX }
@@ -64,13 +66,15 @@ function ViewsWrapper({ bytes, unicodeMode }) {
             </div>
 
             <div
-                tabindex="0"
+                tabIndex="0"
                 className={ classNames(
                     'view--text',
                     styles['view--text'],
                     styles.view,
                     { 'active-view': activeView === VIEW_TEXT }
                 ) }
+                onFocus={setActiveText}
+                onBlur={handleBlur}
             >
                 <View
                     viewType={ VIEW_TEXT }
@@ -83,15 +87,24 @@ function ViewsWrapper({ bytes, unicodeMode }) {
     );
 
     function handleTextViewByteClick(byteIndex) {
-        setActiveView(VIEW_TEXT);
         setSelectedByteIndex(byteIndex);
     }
 
     function handleHexViewByteClick(byteIndex) {
-        setActiveView(VIEW_HEX);
         setSelectedByteIndex(byteIndex);
     }
 
+    function setActiveHex() {
+        setActiveView(VIEW_HEX);
+    }
+
+    function setActiveText() {
+        setActiveView(VIEW_TEXT);
+    }
+
+    function handleBlur() {
+        setActiveView(VIEW_NONE);
+    }
 }
 
 export default ViewsWrapper;

@@ -2,7 +2,7 @@
 
 ::selection {
     color: $dark-1;
-    background: $green;
+    background: $cyan;
 }
 
 body {
@@ -19,7 +19,7 @@ body {
 .header {
     display: flex;
     align-items: flex-start;
-    gap: 10px;
+    gap: 15px;
     padding: 10px;
 
     .file-select {
@@ -28,6 +28,7 @@ body {
 
         &__title {
             font-weight: bold;
+            margin-bottom: 2px;
         }
 
         &__drop-zone {
@@ -45,11 +46,17 @@ body {
         cursor: pointer;
         font-weight: bold;
         color: $red;
-        border-bottom: 2px dashed $red;
+        text-decoration: underline dashed;
+        text-underline-offset: 4px;
+        padding: 4px;
 
         &:hover {
             color: scale-color($red, $lightness: 20%);
             border-color: scale-color($red, $lightness: 20%);
+        }
+
+        &:focus-visible {
+            outline: 1px solid $yellow;
         }
 
         input {
@@ -61,6 +68,7 @@ body {
 .file-info {
     &__title {
         font-weight: bold;
+        margin-bottom: 2px;
     }
 
     &__item {
@@ -78,4 +86,9 @@ body {
 
 .unicode-mode {
     cursor: pointer;
+    padding: 2px 4px 2px 2px;
+
+    input:focus-visible {
+        outline: 1px solid $yellow;
+    }
 }

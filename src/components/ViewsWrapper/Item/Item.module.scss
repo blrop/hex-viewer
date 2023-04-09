@@ -1,7 +1,6 @@
 @import '../../../common/constants';
 
 .value {
-    $self: &;
     height: 20px;
     text-align: center;
 
@@ -23,9 +22,5 @@
     &--selected {
         background: $yellow;
         color: $dark-1;
-
-        :global(.active-view) & {
-            box-shadow: 2px 2px 0 0 $green;
-        }
     }
 }
