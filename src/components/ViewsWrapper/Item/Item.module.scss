@@ -10,17 +10,17 @@
 
     &:hover {
         background: $blue;
-        color: $dark-1;
+        color: $gray-0;
         cursor: pointer;
     }
 
     &--secondary-selected {
         background: $gray-3;
-        color: $dark-1;
+        color: $gray-0;
     }
 
     &--selected {
         background: $yellow;
-        color: $dark-1;
+        color: $gray-0;
     }
 }

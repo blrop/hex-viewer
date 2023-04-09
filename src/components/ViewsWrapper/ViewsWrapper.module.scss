@@ -5,10 +5,19 @@
     gap: 20px;
     overflow-y: auto;
     padding-right: 10px;
+    scrollbar-color: $green $gray-1;
+
+    &::-webkit-scrollbar {
+        background: $gray-1;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: $green;
+    }
 }
 
 .view {
-    border: 1px solid $dark-1;
+    border: 1px solid $gray-0;
     font-size: 18px;
     display: grid;
     grid-template-columns: repeat(24, 1fr);

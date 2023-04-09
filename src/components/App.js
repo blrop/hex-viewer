@@ -56,10 +56,12 @@ function App() {
                     </div>
                 ) }
 
-                <label className={ styles['unicode-mode'] }>
-                    <input type="checkbox" checked={ unicodeMode } onChange={ handleUnicodeModeChange }/>
-                    Unicode mode
-                </label>
+                <div>
+                    <label className={ styles['unicode-mode'] }>
+                        <input type="checkbox" checked={ unicodeMode } onChange={ handleUnicodeModeChange }/>
+                        Unicode mode
+                    </label>
+                </div>
             </div>
 
             { fileBytes && <ViewsWrapper bytes={ fileBytes } unicodeMode={ unicodeMode }/> }

@@ -7,11 +7,15 @@ function StatusBar({ currentByte, currentByteIndex }) {
         <div className={styles['status-bar']}>
             <div className={styles['status-bar__item']}>
                 <div className={styles['status-bar__item-title']}>Byte index:</div>
-                <div className={styles['status-bar__item-value']}>{ currentByteIndex }</div>
+                <div className={styles['status-bar__item-value']}>{ currentByteIndex === -1 ? '-' : currentByteIndex }</div>
+            </div>
+            <div className={styles['status-bar__item']}>
+                <div className={styles['status-bar__item-title']}>Decimal value:</div>
+                <div className={styles['status-bar__item-value']}>{ currentByte || '-' }</div>
             </div>
             <div className={styles['status-bar__item']}>
                 <div className={styles['status-bar__item-title']}>Binary value:</div>
-                <div className={styles['status-bar__item-value']}>{ numberTo8BitString(currentByte) }</div>
+                <div className={styles['status-bar__item-value']}>{ numberTo8BitString(currentByte) || '-' }</div>
             </div>
         </div>
     );
