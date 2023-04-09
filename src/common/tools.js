@@ -94,3 +94,8 @@ export const generateByteGroups = (bytes, unicodeMode) => {
 
     return output;
 }
+
+export const numberTo8BitString = (number) => {
+    const binaryString = number.toString(2).padStart(8, '0');
+    return binaryString.slice(0, 4) + ' ' + binaryString.slice(4);
+};

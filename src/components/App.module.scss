@@ -86,17 +86,16 @@ body {
         gap: 5px;
     }
 
+    &__item-title {
+        margin: 0;
+        color: $gray-2;
+        font-weight: normal;
+    }
+
     &__item-value {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-    }
-
-    h4 {
-        margin: 0;
-        display: inline;
-        color: $gray-2;
-        font-weight: normal;
     }
 }
 
@@ -107,9 +106,4 @@ body {
     input:focus-visible {
         outline: 1px solid $yellow;
     }
-}
-
-.status-bar {
-    border: 1px solid $green;
-    padding: 10px;
 }

@@ -35,22 +35,22 @@ function App() {
                     <div className={ styles['file-info'] }>
                         <div className={ styles['file-info__title'] }>File Info</div>
                         <div className={ styles['file-info__item'] }>
-                            <h4>Name:</h4>
+                            <span className={styles['file-info__item-title']}>Name:</span>
                             <span
                                 className={styles['file-info__item-value']}
                                 title={ fileInfo.name }
                             >{ fileInfo.name }</span>
                         </div>
                         <div className={ styles['file-info__item'] }>
-                            <h4>Size:</h4>
+                            <span className={styles['file-info__item-title']}>Size:</span>
                             <span>{ fileInfo.size }</span>
                         </div>
                         <div className={ styles['file-info__item'] }>
-                            <h4>Type:</h4>
+                            <span className={styles['file-info__item-title']}>Type:</span>
                             <span>{ fileInfo.type }</span>
                         </div>
                         <div className={ styles['file-info__item'] }>
-                            <h4>Last modified:</h4>
+                            <span className={styles['file-info__item-title']}>Last modified:</span>
                             <span>{ moment(fileInfo.lastModified).format("YYYY.MM.DD HH:mm:ss") }</span>
                         </div>
                     </div>
@@ -63,8 +63,6 @@ function App() {
             </div>
 
             { fileBytes && <ViewsWrapper bytes={ fileBytes } unicodeMode={ unicodeMode }/> }
-
-            <div className={styles['status-bar']}></div>
         </div>
     );
 

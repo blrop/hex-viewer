@@ -5,7 +5,7 @@ import styles from "./Item.module.scss";
 
 function Item({ viewType, index, onClick, isSelected, isSecondarySelected, bytes, indexInGroup }) {
     function toHex(number) {
-        return (number < 16 ? '0' : '') + number.toString(16);
+        return number.toString(16).padStart(2, '0');
     }
 
     const handleClick = () => onClick(index);

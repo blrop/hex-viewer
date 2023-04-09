@@ -1,0 +1,21 @@
+@import '../../common/constants';
+
+.status-bar {
+    border-top: 1px solid $blue;
+    padding-top: 5px;
+    display: flex;
+    gap: 20px;
+
+    &__item {
+
+    }
+
+    &__item-title {
+        color: $gray-2;
+        font-size: 12px;
+    }
+
+    &__item-value {
+        font-family: monospace;
+    }
+}
