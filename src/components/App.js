@@ -6,12 +6,14 @@ import { PAGE_SIZE } from '../common/constants';
 
 import styles from './App.module.scss';
 import ViewsWrapper from "./ViewsWrapper/ViewsWrapper";
+import StatusBar from "./StatusBar/StatusBar";
 
 function App() {
     const [fileInfo, setFileInfo] = useState();
-    const [fileBytes, setFileBytes] = useState();
+    const [fileBytes, setFileBytes] = useState([]);
     const [dragOver, setDragOver] = useState(false);
     const [unicodeMode, setUnicodeMode] = useState(true);
+    const [selectedByteIndex, setSelectedByteIndex] = useState(-1);
 
     return (
         <div className={ styles.app }>
@@ -31,30 +33,28 @@ function App() {
                     />
                 </div>
 
-                { fileInfo && (
-                    <div className={ styles['file-info'] }>
-                        <div className={ styles['file-info__title'] }>File Info</div>
-                        <div className={ styles['file-info__item'] }>
-                            <span className={styles['file-info__item-title']}>Name:</span>
-                            <span
-                                className={styles['file-info__item-value']}
-                                title={ fileInfo.name }
-                            >{ fileInfo.name }</span>
-                        </div>
-                        <div className={ styles['file-info__item'] }>
-                            <span className={styles['file-info__item-title']}>Size:</span>
-                            <span>{ fileInfo.size }</span>
-                        </div>
-                        <div className={ styles['file-info__item'] }>
-                            <span className={styles['file-info__item-title']}>Type:</span>
-                            <span>{ fileInfo.type }</span>
-                        </div>
-                        <div className={ styles['file-info__item'] }>
-                            <span className={styles['file-info__item-title']}>Last modified:</span>
-                            <span>{ moment(fileInfo.lastModified).format("YYYY.MM.DD HH:mm:ss") }</span>
-                        </div>
+                <div className={ styles['file-info'] }>
+                    <div className={ styles['file-info__title'] }>File Info</div>
+                    <div className={ styles['file-info__item'] }>
+                        <span className={ styles['file-info__item-title'] }>Name:</span>
+                        <span
+                            className={ styles['file-info__item-value'] }
+                            title={ fileInfo?.name }
+                        >{ fileInfo?.name }</span>
                     </div>
-                ) }
+                    <div className={ styles['file-info__item'] }>
+                        <span className={ styles['file-info__item-title'] }>Size:</span>
+                        <span>{ fileInfo?.size }</span>
+                    </div>
+                    <div className={ styles['file-info__item'] }>
+                        <span className={ styles['file-info__item-title'] }>Type:</span>
+                        <span>{ fileInfo?.type }</span>
+                    </div>
+                    <div className={ styles['file-info__item'] }>
+                        <span className={ styles['file-info__item-title'] }>Last modified:</span>
+                        <span>{ fileInfo?.lastModified && moment(fileInfo.lastModified).format("YYYY.MM.DD HH:mm:ss") }</span>
+                    </div>
+                </div>
 
                 <div>
                     <label className={ styles['unicode-mode'] }>
@@ -64,7 +64,14 @@ function App() {
                 </div>
             </div>
 
-            { fileBytes && <ViewsWrapper bytes={ fileBytes } unicodeMode={ unicodeMode }/> }
+            <ViewsWrapper
+                bytes={ fileBytes }
+                unicodeMode={ unicodeMode }
+                selectedByteIndex={ selectedByteIndex }
+                setSelectedByteIndex={ setSelectedByteIndex }
+            />
+
+            <StatusBar currentByte={ fileBytes[selectedByteIndex] } currentByteIndex={ selectedByteIndex }/>
         </div>
     );
 

@@ -6,10 +6,8 @@ import { generateByteGroups } from "../../common/tools";
 import View from "./View/View";
 
 import styles from './ViewsWrapper.module.scss';
-import StatusBar from "../StatusBar/StatusBar";
 
-function ViewsWrapper({ bytes, unicodeMode }) {
-    const [selectedByteIndex, setSelectedByteIndex] = useState(-1);
+function ViewsWrapper({ bytes, unicodeMode, selectedByteIndex, setSelectedByteIndex }) {
     const [activeView, setActiveView] = useState(VIEW_NONE);
 
     const rowSize = 24;
@@ -17,51 +15,47 @@ function ViewsWrapper({ bytes, unicodeMode }) {
     const byteGroups = generateByteGroups(bytes, unicodeMode);
 
     return (
-        <>
-            <div className={ styles.wrapper }>
-                <div
-                    tabIndex="0"
-                    className={ classNames(
-                        'view--hex',
-                        styles['view--hex'],
-                        styles.view,
-                        { 'active-view': activeView === VIEW_HEX }
-                    ) }
-                    onFocus={ setActiveHex }
-                    onBlur={ handleBlur }
-                    onKeyDown={ handleKeyDown }
-                >
-                    <View
-                        viewType={ VIEW_HEX }
-                        byteGroups={ byteGroups }
-                        selectedByteIndex={ selectedByteIndex }
-                        onByteClick={ handleHexViewByteClick }
-                    />
-                </div>
-
-                <div
-                    tabIndex="0"
-                    className={ classNames(
-                        'view--text',
-                        styles['view--text'],
-                        styles.view,
-                        { 'active-view': activeView === VIEW_TEXT }
-                    ) }
-                    onFocus={ setActiveText }
-                    onBlur={ handleBlur }
-                    onKeyDown={ handleKeyDown }
-                >
-                    <View
-                        viewType={ VIEW_TEXT }
-                        byteGroups={ byteGroups }
-                        selectedByteIndex={ selectedByteIndex }
-                        onByteClick={ handleTextViewByteClick }
-                    />
-                </div>
+        <div className={ styles.wrapper }>
+            <div
+                tabIndex="0"
+                className={ classNames(
+                    'view--hex',
+                    styles['view--hex'],
+                    styles.view,
+                    { 'active-view': activeView === VIEW_HEX }
+                ) }
+                onFocus={ setActiveHex }
+                onBlur={ handleBlur }
+                onKeyDown={ handleKeyDown }
+            >
+                <View
+                    viewType={ VIEW_HEX }
+                    byteGroups={ byteGroups }
+                    selectedByteIndex={ selectedByteIndex }
+                    onByteClick={ handleHexViewByteClick }
+                />
             </div>
 
-            <StatusBar currentByte={ bytes[selectedByteIndex] } currentByteIndex={ selectedByteIndex }/>
-        </>
+            <div
+                tabIndex="0"
+                className={ classNames(
+                    'view--text',
+                    styles['view--text'],
+                    styles.view,
+                    { 'active-view': activeView === VIEW_TEXT }
+                ) }
+                onFocus={ setActiveText }
+                onBlur={ handleBlur }
+                onKeyDown={ handleKeyDown }
+            >
+                <View
+                    viewType={ VIEW_TEXT }
+                    byteGroups={ byteGroups }
+                    selectedByteIndex={ selectedByteIndex }
+                    onByteClick={ handleTextViewByteClick }
+                />
+            </div>
+        </div>
     );
 
     function handleTextViewByteClick(byteIndex) {
