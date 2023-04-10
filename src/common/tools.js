@@ -102,3 +102,21 @@ export const numberTo8BitString = (number) => {
     const binaryString = number.toString(2).padStart(8, '0');
     return binaryString.slice(0, 4) + ' ' + binaryString.slice(4);
 };
+
+export const fileSizeToUnits = (size) => {
+    const kb = 1024;
+    const mb = kb * 1024;
+    const gb = mb * 1024;
+
+    if (size > gb) {
+        return `${ Math.round(size / gb) } Gb`;
+    }
+    if (size > mb) {
+        return `${ Math.round(size / mb) } Mb`;
+    }
+    if (size > kb) {
+        return `${ Math.round(size / kb) } Kb`;
+    }
+
+    return `${ size } bytes`;
+};

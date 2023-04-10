@@ -7,8 +7,11 @@ import { PAGE_SIZE } from '../common/constants';
 import styles from './App.module.scss';
 import ViewsWrapper from "./ViewsWrapper/ViewsWrapper";
 import StatusBar from "./StatusBar/StatusBar";
+import { fileSizeToUnits } from "../common/tools";
 
 function App() {
+    const [file, setFile] = useState();
+    const [page, setPage] = useState(1);
     const [fileInfo, setFileInfo] = useState();
     const [fileBytes, setFileBytes] = useState([]);
     const [dragOver, setDragOver] = useState(false);
@@ -44,7 +47,7 @@ function App() {
                     </div>
                     <div className={ styles['file-info__item'] }>
                         <span className={ styles['file-info__item-title'] }>Size:</span>
-                        <span>{ fileInfo?.size }</span>
+                        { fileInfo?.size && <span title={ `${fileInfo.size} bytes` }>{fileSizeToUnits(fileInfo.size) }</span> }
                     </div>
                     <div className={ styles['file-info__item'] }>
                         <span className={ styles['file-info__item-title'] }>Type:</span>
@@ -71,7 +74,13 @@ function App() {
                 setSelectedByteIndex={ setSelectedByteIndex }
             />
 
-            <StatusBar currentByte={ fileBytes[selectedByteIndex] } currentByteIndex={ selectedByteIndex }/>
+            <StatusBar
+                currentByte={ fileBytes[selectedByteIndex] }
+                currentByteIndex={ selectedByteIndex + ((page - 1) * PAGE_SIZE) }
+                currentPage={ page }
+                totalPages={ fileInfo?.size && Math.ceil(fileInfo?.size / PAGE_SIZE) }
+                setPage={handleSetPage}
+            />
         </div>
     );
 
@@ -112,7 +121,16 @@ function App() {
         handleFileSelect(e.target.files[0]);
     }
 
+    function handleFileLoad(e){
+        const buffer = e.target.result;
+
+        const view = new Uint8Array(buffer);
+        setFileBytes(view);
+    }
+
     function handleFileSelect(file) {
+        setFile(file);
+
         setFileInfo({
             lastModified: file.lastModified,
             name: file.name,
@@ -120,19 +138,28 @@ function App() {
             type: file.type,
         });
 
-        const reader = new FileReader();
-        reader.onload = handleReaderLoad;
-
-        const bytesToView = file.size <= PAGE_SIZE ? file.size : PAGE_SIZE;
+        const bytesToView = PAGE_SIZE <= file.size ? PAGE_SIZE : file.size;
         const blob = file.slice(0, bytesToView);
+
+        const reader = new FileReader();
+        reader.onload = handleFileLoad;
+        reader.readAsArrayBuffer(blob);
+    }
+
+    function handleSetPage(newPage) {
+        if (!file) {
+            return;
+        }
+
+        const start = (newPage - 1) * PAGE_SIZE;
+        const end = (newPage - 1) * PAGE_SIZE + PAGE_SIZE;
+        const blob = file.slice(start, end <= file.size ? end : file.size);
+
+        const reader = new FileReader();
+        reader.onload = handleFileLoad;
         reader.readAsArrayBuffer(blob);
 
-        function handleReaderLoad(e) {
-            const buffer = e.target.result;
-
-            const view = new Uint8Array(buffer);
-            setFileBytes(view);
-        }
+        setPage(newPage);
     }
 }
 

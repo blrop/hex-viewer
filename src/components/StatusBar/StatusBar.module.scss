@@ -4,6 +4,7 @@
     border-top: 1px solid $blue;
     padding-top: 5px;
     display: flex;
+    align-items: center;
     gap: 20px;
 
     &__item {
@@ -17,5 +18,18 @@
 
     &__item-value {
         font-family: monospace;
+    }
+
+    input {
+        width: 65px;
+        margin: 0 5px;
+        color: $blue;
+        border: none;
+        background: $gray-1;
+        font-size: 16px;
+
+        &:focus {
+            outline: 1px solid $yellow;
+        }
     }
 }
