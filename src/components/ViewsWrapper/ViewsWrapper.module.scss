@@ -8,6 +8,10 @@
     padding-right: 10px;
     scrollbar-color: $green $gray-1;
 
+    &:focus {
+        outline: 1px solid $yellow;
+    }
+
     &::-webkit-scrollbar {
         background: $gray-1;
     }
@@ -19,7 +23,6 @@
 
 .view {
     align-self: start;
-    border: 1px solid $gray-0;
     font-size: 18px;
     display: grid;
     grid-template-columns: repeat(24, 1fr);
@@ -36,10 +39,4 @@
         color: $yellow;
         gap: 5px 0;
     }
-}
-
-.view:global(.active-view),
-.view:focus {
-    border-color: $yellow;
-    outline: none;
 }

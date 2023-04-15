@@ -1,32 +1,24 @@
-import { useState } from 'react';
 import classNames from "classnames";
 
-import { VIEW_HEX, VIEW_TEXT, VIEW_NONE } from "../../common/constants";
+import { VIEW_HEX, VIEW_TEXT } from "../../common/constants";
 import { generateByteGroups } from "../../common/tools";
 import View from "./View/View";
 
 import styles from './ViewsWrapper.module.scss';
 
 function ViewsWrapper({ bytes, unicodeMode, selectedByteIndex, setSelectedByteIndex }) {
-    const [activeView, setActiveView] = useState(VIEW_NONE);
-
     const rowSize = 24;
 
     const byteGroups = generateByteGroups(bytes, unicodeMode);
 
     return (
-        <div className={ styles.wrapper }>
+        <div className={ styles.wrapper } tabIndex="0" onKeyDown={ handleKeyDown }>
             <div
-                tabIndex="0"
                 className={ classNames(
                     'view--hex',
                     styles['view--hex'],
                     styles.view,
-                    { 'active-view': activeView === VIEW_HEX }
                 ) }
-                onFocus={ setActiveHex }
-                onBlur={ handleBlur }
-                onKeyDown={ handleKeyDown }
             >
                 <View
                     viewType={ VIEW_HEX }
@@ -37,16 +29,11 @@ function ViewsWrapper({ bytes, unicodeMode, selectedByteIndex, setSelectedByteIn
             </div>
 
             <div
-                tabIndex="0"
                 className={ classNames(
                     'view--text',
                     styles['view--text'],
                     styles.view,
-                    { 'active-view': activeView === VIEW_TEXT }
                 ) }
-                onFocus={ setActiveText }
-                onBlur={ handleBlur }
-                onKeyDown={ handleKeyDown }
             >
                 <View
                     viewType={ VIEW_TEXT }
@@ -64,18 +51,6 @@ function ViewsWrapper({ bytes, unicodeMode, selectedByteIndex, setSelectedByteIn
 
     function handleHexViewByteClick(byteIndex) {
         setSelectedByteIndex(byteIndex);
-    }
-
-    function setActiveHex() {
-        setActiveView(VIEW_HEX);
-    }
-
-    function setActiveText() {
-        setActiveView(VIEW_TEXT);
-    }
-
-    function handleBlur() {
-        setActiveView(VIEW_NONE);
     }
 
     function handleKeyDown(e) {
