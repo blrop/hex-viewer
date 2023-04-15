@@ -19,7 +19,7 @@
         color: $gray-0;
     }
 
-    &--selected {
+    &--selected, &--selected:hover {
         background: $yellow;
         color: $gray-0;
     }
