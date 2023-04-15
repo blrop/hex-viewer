@@ -67,20 +67,21 @@ function App() {
                 </div>
             </div>
 
-            <ViewsWrapper
-                bytes={ fileBytes }
-                unicodeMode={ unicodeMode }
-                selectedByteIndex={ selectedByteIndex }
-                setSelectedByteIndex={ setSelectedByteIndex }
-            />
-
-            <StatusBar
-                currentByte={ fileBytes[selectedByteIndex] }
-                currentByteIndex={ selectedByteIndex + ((page - 1) * PAGE_SIZE) }
-                currentPage={ page }
-                totalPages={ fileInfo?.size && Math.ceil(fileInfo?.size / PAGE_SIZE) }
-                setPage={handleSetPage}
-            />
+            <div className={ styles['app__body'] }>
+                <ViewsWrapper
+                    bytes={ fileBytes }
+                    unicodeMode={ unicodeMode }
+                    selectedByteIndex={ selectedByteIndex }
+                    setSelectedByteIndex={ setSelectedByteIndex }
+                />
+                <StatusBar
+                    currentByte={ fileBytes[selectedByteIndex] }
+                    currentByteIndex={ selectedByteIndex + ((page - 1) * PAGE_SIZE) }
+                    currentPage={ page }
+                    totalPages={ fileInfo?.size && Math.ceil(fileInfo?.size / PAGE_SIZE) }
+                    setPage={handleSetPage}
+                />
+            </div>
         </div>
     );
 
