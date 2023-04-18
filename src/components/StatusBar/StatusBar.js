@@ -2,7 +2,7 @@ import { numberTo8BitString } from "../../common/tools";
 
 import styles from './StatusBar.module.scss';
 
-function StatusBar({ currentByte, currentByteIndex, currentPage, totalPages, setPage }) {
+function StatusBar({ currentByte, currentByteIndex, currentPage, totalPages, setPage, unicodeMode, toggleUnicodeMode }) {
     return (
         <div className={ styles['status-bar'] }>
             <div className={ styles['status-bar__item'] }>
@@ -25,9 +25,15 @@ function StatusBar({ currentByte, currentByteIndex, currentPage, totalPages, set
                     min={ 1 }
                     max={ totalPages }
                     value={ currentPage }
-                    onChange={handlePageChange}
+                    onChange={ handlePageChange }
                 />
                 <span className={ styles['status-bar__item-title'] }>of { totalPages || 0 }</span>
+            </div>
+            <div className={ styles['status-bar__item'] }>
+                <label className={ styles['unicode-mode'] }>
+                    <input type="checkbox" checked={ unicodeMode } onChange={ toggleUnicodeMode }/>
+                    Unicode mode
+                </label>
             </div>
         </div>
     );

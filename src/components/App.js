@@ -47,7 +47,7 @@ function App() {
                     </div>
                     <div className={ styles['file-info__item'] }>
                         <span className={ styles['file-info__item-title'] }>Size:</span>
-                        { fileInfo?.size && <span title={ `${fileInfo.size} bytes` }>{fileSizeToUnits(fileInfo.size) }</span> }
+                        { fileInfo?.size && <span title={ `${ fileInfo.size } bytes` }>{ fileSizeToUnits(fileInfo.size) }</span> }
                     </div>
                     <div className={ styles['file-info__item'] }>
                         <span className={ styles['file-info__item-title'] }>Type:</span>
@@ -57,13 +57,6 @@ function App() {
                         <span className={ styles['file-info__item-title'] }>Last modified:</span>
                         <span>{ fileInfo?.lastModified && moment(fileInfo.lastModified).format("YYYY.MM.DD HH:mm:ss") }</span>
                     </div>
-                </div>
-
-                <div>
-                    <label className={ styles['unicode-mode'] }>
-                        <input type="checkbox" checked={ unicodeMode } onChange={ handleUnicodeModeChange }/>
-                        Unicode mode
-                    </label>
                 </div>
             </div>
 
@@ -79,13 +72,15 @@ function App() {
                     currentByteIndex={ selectedByteIndex + ((page - 1) * PAGE_SIZE) }
                     currentPage={ page }
                     totalPages={ fileInfo?.size && Math.ceil(fileInfo?.size / PAGE_SIZE) }
-                    setPage={handleSetPage}
+                    setPage={ handleSetPage }
+                    unicodeMode={ unicodeMode }
+                    toggleUnicodeMode={ toggleUnicodeMode }
                 /> }
             </div>
         </div>
     );
 
-    function handleUnicodeModeChange() {
+    function toggleUnicodeMode() {
         setUnicodeMode(!unicodeMode);
     }
 
@@ -122,7 +117,7 @@ function App() {
         handleFileSelect(e.target.files[0]);
     }
 
-    function handleFileLoad(e){
+    function handleFileLoad(e) {
         const buffer = e.target.result;
 
         const view = new Uint8Array(buffer);

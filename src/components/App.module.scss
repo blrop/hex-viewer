@@ -25,6 +25,7 @@ body {
         display: flex;
         gap: 10px;
         flex-direction: column;
+        flex-grow: 1;
     }
 }
 
@@ -102,14 +103,5 @@ body {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-    }
-}
-
-.unicode-mode {
-    cursor: pointer;
-    padding: 2px 4px 2px 2px;
-
-    input:focus-visible {
-        outline: 1px solid $yellow;
     }
 }
