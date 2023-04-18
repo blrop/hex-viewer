@@ -74,13 +74,13 @@ function App() {
                     selectedByteIndex={ selectedByteIndex }
                     setSelectedByteIndex={ setSelectedByteIndex }
                 />
-                <StatusBar
+                { file && <StatusBar
                     currentByte={ fileBytes[selectedByteIndex] }
                     currentByteIndex={ selectedByteIndex + ((page - 1) * PAGE_SIZE) }
                     currentPage={ page }
                     totalPages={ fileInfo?.size && Math.ceil(fileInfo?.size / PAGE_SIZE) }
                     setPage={handleSetPage}
-                />
+                /> }
             </div>
         </div>
     );
