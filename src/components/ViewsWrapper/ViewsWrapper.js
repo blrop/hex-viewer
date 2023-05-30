@@ -1,18 +1,19 @@
+import { useRef } from 'react';
 import classNames from "classnames";
 
-import { VIEW_HEX, VIEW_TEXT } from "../../common/constants";
+import { ROW_SIZE_1, ROWS_GAP, VIEW_HEX, VIEW_ITEM_HEIGHT, VIEW_TEXT } from "../../common/constants";
 import { generateByteGroups } from "../../common/tools";
 import View from "./View/View";
 
 import styles from './ViewsWrapper.module.scss';
 
 function ViewsWrapper({ bytes, unicodeMode, selectedByteIndex, setSelectedByteIndex }) {
-    const rowSize = 24;
+    const wrapperRef = useRef();
 
     const byteGroups = generateByteGroups(bytes, unicodeMode);
 
     return (
-        <div className={ styles.wrapper } tabIndex="0" onKeyDown={ handleKeyDown }>
+        <div className={ styles.wrapper } tabIndex="0" onKeyDown={ handleKeyDown } ref={wrapperRef}>
             <div
                 className={ classNames(
                     'view--hex',
@@ -54,42 +55,55 @@ function ViewsWrapper({ bytes, unicodeMode, selectedByteIndex, setSelectedByteIn
     }
 
     function handleKeyDown(e) {
+        const currentRowSize = ROW_SIZE_1; // todo: depends on screen width
+        let newIndex;
+
         switch (e.key) {
             case 'ArrowLeft': {
                 if (selectedByteIndex > 0) {
-                    setSelectedByteIndex(selectedByteIndex - 1);
+                    newIndex = selectedByteIndex - 1;
                 }
                 break;
             }
             case 'ArrowRight': {
                 if (selectedByteIndex < bytes.length) {
-                    setSelectedByteIndex(selectedByteIndex + 1);
+                    newIndex = selectedByteIndex + 1;
                 }
                 break;
             }
             case 'ArrowUp': {
                 e.preventDefault();
 
-                const newIndex = selectedByteIndex - rowSize;
-                if (newIndex >= 0) {
-                    setSelectedByteIndex(newIndex);
+                const tmpIndex = selectedByteIndex - currentRowSize;
+                if (tmpIndex >= 0) {
+                    newIndex = tmpIndex;
                 } else {
-                    setSelectedByteIndex(0);
+                    newIndex = 0;
                 }
                 break;
             }
             case 'ArrowDown': {
                 e.preventDefault();
 
-                const newIndex = selectedByteIndex + rowSize;
-                if (newIndex < bytes.length) {
-                    setSelectedByteIndex(newIndex);
+                const tmpIndex = selectedByteIndex + currentRowSize;
+                if (tmpIndex < bytes.length) {
+                    newIndex = tmpIndex;
                 } else {
-                    setSelectedByteIndex(bytes.length - 1);
+                    newIndex = bytes.length - 1;
                 }
                 break;
             }
             default:
+        }
+        setSelectedByteIndex(newIndex);
+
+        const wrapperHeight = wrapperRef.current.clientHeight;
+        const currentRowIndex = Math.floor(newIndex / currentRowSize);
+        const currentRowScrollTop = currentRowIndex * (VIEW_ITEM_HEIGHT + ROWS_GAP);
+        if (currentRowScrollTop < wrapperRef.current.scrollTop) {
+            wrapperRef.current.scrollTop = currentRowScrollTop;
+        } else if (currentRowScrollTop > (wrapperRef.current.scrollTop + wrapperHeight - (VIEW_ITEM_HEIGHT + ROWS_GAP))) {
+            wrapperRef.current.scrollTop = currentRowScrollTop - wrapperHeight + VIEW_ITEM_HEIGHT + ROWS_GAP;
         }
     }
 }

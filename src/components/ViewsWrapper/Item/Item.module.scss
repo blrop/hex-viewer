@@ -1,7 +1,7 @@
 @import '../../../common/constants';
 
 .value {
-    height: 20px;
+    height: $viewItemHeight;
     text-align: center;
 
     :global(.view--text) & {

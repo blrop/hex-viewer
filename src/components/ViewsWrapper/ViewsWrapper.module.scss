@@ -25,31 +25,31 @@
     align-self: start;
     font-size: 18px;
     display: grid;
-    grid-template-columns: repeat(24, 1fr);
+    grid-template-columns: repeat($rowSize1, 1fr);
     font-family: monospace;
     padding: 3px;
 
     @media (max-width: 1200px) {
-        grid-template-columns: repeat(16, 1fr);
+        grid-template-columns: repeat($rowSize2, 1fr);
     }
 
     @media (max-width: 800px) {
-        grid-template-columns: repeat(8, 1fr);
+        grid-template-columns: repeat($rowSize3, 1fr);
     }
 
     @media (max-width: 450px) {
-        grid-template-columns: repeat(6, 1fr);
+        grid-template-columns: repeat($rowSize4, 1fr);
         // todo: need to shorten status bar as well
     }
 
     &--hex {
         text-transform: uppercase;
-        gap: 5px 10px;
+        gap: $rowsGap 10px;
         color: $green;
     }
 
     &--text {
         color: $yellow;
-        gap: 5px 0;
+        gap: $rowsGap 0;
     }
 }
