@@ -1,7 +1,19 @@
 import { useRef } from 'react';
 import classNames from "classnames";
 
-import { ROW_SIZE_1, ROWS_GAP, VIEW_HEX, VIEW_ITEM_HEIGHT, VIEW_TEXT } from "../../common/constants";
+import {
+    ROW_SIZE_1,
+    ROW_SIZE_2,
+    ROW_SIZE_3,
+    ROW_SIZE_4,
+    ROWS_GAP,
+    SCREEN_SIZE_1,
+    SCREEN_SIZE_2,
+    SCREEN_SIZE_3,
+    VIEW_HEX,
+    VIEW_ITEM_HEIGHT,
+    VIEW_TEXT
+} from "../../common/constants";
 import { generateByteGroups } from "../../common/tools";
 import View from "./View/View";
 
@@ -55,7 +67,19 @@ function ViewsWrapper({ bytes, unicodeMode, selectedByteIndex, setSelectedByteIn
     }
 
     function handleKeyDown(e) {
-        const currentRowSize = ROW_SIZE_1; // todo: depends on screen width
+        const getRowSizeByScreenWidth = (screenWidth) => {
+            if (screenWidth > SCREEN_SIZE_1) {
+                return ROW_SIZE_1;
+            } else if (screenWidth > SCREEN_SIZE_2) {
+                return ROW_SIZE_2;
+            } else if (screenWidth > SCREEN_SIZE_3) {
+                return ROW_SIZE_3;
+            } else {
+                return ROW_SIZE_4;
+            }
+        };
+
+        const currentRowSize = getRowSizeByScreenWidth(window.screen.width);
         let newIndex;
 
         switch (e.key) {

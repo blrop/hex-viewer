@@ -29,15 +29,15 @@
     font-family: monospace;
     padding: 3px;
 
-    @media (max-width: 1200px) {
+    @media (max-width: $screenSize1) {
         grid-template-columns: repeat($rowSize2, 1fr);
     }
 
-    @media (max-width: 800px) {
+    @media (max-width: $screenSize2) {
         grid-template-columns: repeat($rowSize3, 1fr);
     }
 
-    @media (max-width: 450px) {
+    @media (max-width: $screenSize3) {
         grid-template-columns: repeat($rowSize4, 1fr);
         // todo: need to shorten status bar as well
     }
