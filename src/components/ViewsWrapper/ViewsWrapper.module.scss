@@ -39,7 +39,6 @@
 
     @media (max-width: $screenSize3) {
         grid-template-columns: repeat($rowSize4, 1fr);
-        // todo: need to shorten status bar as well
     }
 
     &--hex {

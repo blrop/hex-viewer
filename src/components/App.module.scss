@@ -31,7 +31,7 @@ body {
 
 .header {
     display: flex;
-    align-items: stretch;
+    align-items: center;
     gap: 15px;
 }
 
@@ -60,6 +60,11 @@ body {
 .file-select {
     display: flex;
     flex-direction: column;
+    align-self: stretch;
+
+    @media (max-width: $screenSize2) {
+        display: none;
+    }
 
     &__title {
         font-weight: bold;
@@ -79,8 +84,6 @@ body {
 
 
 .file-info {
-    width: 300px;
-
     &__title {
         font-weight: bold;
         margin-bottom: 2px;
@@ -103,5 +106,6 @@ body {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        max-width: 150px;
     }
 }

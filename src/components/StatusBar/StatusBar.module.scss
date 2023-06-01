@@ -7,8 +7,30 @@
     align-items: center;
     gap: 20px;
 
+    &__values {
+        display: flex;
+        gap: 20px;
+
+        @media (max-width: $screenSize2) {
+            flex-direction: column;
+            gap: 5px;
+        }
+    }
+
+    &__controls {
+        display: flex;
+        gap: 20px;
+
+        @media (max-width: $screenSize2) {
+            flex-direction: column;
+            gap: 20px;
+            align-items: flex-end;
+            flex-grow: 1;
+        }
+    }
+
     &__item {
-        &:last-child {
+        &--unicode-switch {
             flex-grow: 1;
             text-align: right;
         }
