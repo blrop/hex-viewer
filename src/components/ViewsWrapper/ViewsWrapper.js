@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useMemo } from 'react';
 import classNames from "classnames";
 
 import {
@@ -22,7 +22,7 @@ import styles from './ViewsWrapper.module.scss';
 function ViewsWrapper({ bytes, unicodeMode, selectedByteIndex, setSelectedByteIndex }) {
     const wrapperRef = useRef();
 
-    const byteGroups = generateByteGroups(bytes, unicodeMode);
+    const byteGroups = useMemo(() => generateByteGroups(bytes, unicodeMode), [bytes, unicodeMode]);
 
     return (
         <div className={ styles.wrapper } tabIndex="0" onKeyDown={ handleKeyDown } ref={wrapperRef}>
