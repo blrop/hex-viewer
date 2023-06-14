@@ -118,6 +118,7 @@ function ViewsWrapper({ bytes, unicodeMode, selectedByteIndex, setSelectedByteIn
                 break;
             }
             default:
+                return;
         }
         setSelectedByteIndex(newIndex);
 

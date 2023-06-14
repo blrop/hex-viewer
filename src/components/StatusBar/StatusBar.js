@@ -8,8 +8,9 @@ function StatusBar({ currentByte, currentByteIndex, currentPage, totalPages, set
             <div className={ styles['status-bar__values'] }>
                 <div className={ styles['status-bar__item'] }>
                     <div className={ styles['status-bar__item-title'] }>Byte index:</div>
-                    <div
-                        className={ styles['status-bar__item-value'] }>{ currentByteIndex === -1 ? '-' : currentByteIndex }</div>
+                    <div className={ styles['status-bar__item-value'] }>
+                        { currentByteIndex === -1 ? '-' : currentByteIndex }
+                    </div>
                 </div>
 
                 <div className={ styles['status-bar__item'] }>
