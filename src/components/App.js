@@ -2,7 +2,7 @@ import { useState } from 'react';
 import moment from 'moment';
 import classNames from 'classnames';
 
-import { PAGE_SIZE } from '../common/constants';
+import { FILE_DUMP_EXAMPLE, PAGE_SIZE } from '../common/constants';
 
 import styles from './App.module.scss';
 import ViewsWrapper from "./ViewsWrapper/ViewsWrapper";
@@ -13,7 +13,7 @@ function App() {
     const [file, setFile] = useState();
     const [page, setPage] = useState(1);
     const [fileInfo, setFileInfo] = useState();
-    const [fileBytes, setFileBytes] = useState([]);
+    const [fileBytes, setFileBytes] = useState(FILE_DUMP_EXAMPLE);
     const [dragOver, setDragOver] = useState(false);
     const [unicodeMode, setUnicodeMode] = useState(true);
     const [selectedByteIndex, setSelectedByteIndex] = useState(-1);
