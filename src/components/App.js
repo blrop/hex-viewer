@@ -67,7 +67,7 @@ function App() {
                     selectedByteIndex={ selectedByteIndex }
                     setSelectedByteIndex={ setSelectedByteIndex }
                 />
-                { file && <StatusBar
+                <StatusBar
                     currentByte={ fileBytes[selectedByteIndex] }
                     currentByteIndex={ selectedByteIndex + ((page - 1) * PAGE_SIZE) }
                     currentPage={ page }
@@ -75,7 +75,7 @@ function App() {
                     setPage={ handleSetPage }
                     unicodeMode={ unicodeMode }
                     toggleUnicodeMode={ toggleUnicodeMode }
-                /> }
+                />
             </div>
         </div>
     );
